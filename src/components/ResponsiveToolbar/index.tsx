@@ -17,7 +17,7 @@ export default function ResponsiveToolbar({ breakpoint, onChangeBreakpoint }: Re
         alignItems: 'center',
         gap: 2,
         borderRadius: 99,
-        paddingX: 2,
+        padding: 2,
         paddingY: 1,
         '.MuiSvgIcon-root': {
           color: 'common.black',

@@ -19,6 +19,7 @@ export default function Workspace({ breakpoint }: WorkspaceProps) {
         maxWidth: widthMap[breakpoint],
         height: 'fit-content',
         minHeight: 500,
+        transition: 'max-width 0.3s ease',
       }}
     >
       Workspace
