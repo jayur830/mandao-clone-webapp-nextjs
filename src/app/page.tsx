@@ -1,10 +1,16 @@
+'use client';
+
 import { AppBar, Grid, Toolbar } from '@mui/material';
+import { useState } from 'react';
 
 import ComponentMenu from '@/components/ComponentMenu';
 import ControlMenu from '@/components/ControlMenu';
 import ResponsiveToolbar from '@/components/ResponsiveToolbar';
+import Workspace from '@/components/Workspace';
 
 export default function Page() {
+  const [breakpoint, setBreakpoint] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+
   return (
     <>
       <AppBar
@@ -24,13 +30,21 @@ export default function Page() {
           container
           justifyContent="center"
           flex={1}
+          height="100%"
+          paddingX={3}
+          paddingY={16}
+          overflow="scroll"
         >
           <Grid
-            position="absolute"
-            top={30}
+            position="fixed"
+            top={90}
           >
-            <ResponsiveToolbar />
+            <ResponsiveToolbar
+              breakpoint={breakpoint}
+              onChangeBreakpoint={setBreakpoint}
+            />
           </Grid>
+          <Workspace breakpoint={breakpoint} />
         </Grid>
         <ControlMenu />
       </Grid>
