@@ -10,6 +10,7 @@ import Workspace from '@/components/Workspace';
 
 export default function Page() {
   const [breakpoint, setBreakpoint] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [selectedComponent, setSelectedComponent] = useState<'block' | 'image' | 'video' | 'carousel' | 'button'>();
 
   return (
     <>
@@ -24,7 +25,10 @@ export default function Page() {
         height="calc(100% - 64px)"
         sx={{ backgroundColor: '#DDDDDD' }}
       >
-        <ComponentMenu />
+        <ComponentMenu
+          selectedMenu={selectedComponent}
+          onChangeSelectedMenu={setSelectedComponent}
+        />
         <Grid
           position="relative"
           container
@@ -34,6 +38,9 @@ export default function Page() {
           paddingX={3}
           paddingY={16}
           overflow="scroll"
+          onMouseDown={() => {
+            setSelectedComponent(undefined);
+          }}
         >
           <Grid
             position="fixed"

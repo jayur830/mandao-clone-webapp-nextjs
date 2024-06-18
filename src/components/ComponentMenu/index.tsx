@@ -1,7 +1,12 @@
 import { ImageOutlined, SmartButtonOutlined, SmartDisplayOutlined, ViewAgendaOutlined, ViewCarouselOutlined } from '@mui/icons-material';
 import { IconButton, List, ListItem, Paper, Tooltip } from '@mui/material';
 
-export default function ComponentMenu() {
+export interface ComponentMenuProps {
+  selectedMenu: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined;
+  onChangeSelectedMenu(value: 'block' | 'image' | 'video' | 'carousel' | 'button'): void;
+}
+
+export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: ComponentMenuProps) {
   return (
     <Paper
       square
@@ -26,8 +31,20 @@ export default function ComponentMenu() {
             placement="right"
             title="블록"
           >
-            <IconButton title="Block">
-              <ViewAgendaOutlined fontSize="medium" />
+            <IconButton
+              sx={{ backgroundColor: selectedMenu === 'block' ? '#1F1F1F' : 'transparent' }}
+              onClick={() => {
+                onChangeSelectedMenu('block');
+              }}
+            >
+              <ViewAgendaOutlined
+                fontSize="medium"
+                sx={{
+                  '&.MuiSvgIcon-root': {
+                    fill: selectedMenu === 'block' ? 'white' : 'black',
+                  },
+                }}
+              />
             </IconButton>
           </Tooltip>
         </ListItem>
@@ -37,8 +54,20 @@ export default function ComponentMenu() {
             placement="right"
             title="이미지"
           >
-            <IconButton title="Image">
-              <ImageOutlined fontSize="medium" />
+            <IconButton
+              sx={{ backgroundColor: selectedMenu === 'image' ? '#1F1F1F' : 'transparent' }}
+              onClick={() => {
+                onChangeSelectedMenu('image');
+              }}
+            >
+              <ImageOutlined
+                fontSize="medium"
+                sx={{
+                  '&.MuiSvgIcon-root': {
+                    fill: selectedMenu === 'image' ? 'white' : 'black',
+                  },
+                }}
+              />
             </IconButton>
           </Tooltip>
         </ListItem>
@@ -48,8 +77,20 @@ export default function ComponentMenu() {
             placement="right"
             title="비디오 (에셋, 유튜브)"
           >
-            <IconButton title="Video (Asset, Youtube)">
-              <SmartDisplayOutlined fontSize="medium" />
+            <IconButton
+              sx={{ backgroundColor: selectedMenu === 'video' ? '#1F1F1F' : 'transparent' }}
+              onClick={() => {
+                onChangeSelectedMenu('video');
+              }}
+            >
+              <SmartDisplayOutlined
+                fontSize="medium"
+                sx={{
+                  '&.MuiSvgIcon-root': {
+                    fill: selectedMenu === 'video' ? 'white' : 'black',
+                  },
+                }}
+              />
             </IconButton>
           </Tooltip>
         </ListItem>
@@ -59,8 +100,20 @@ export default function ComponentMenu() {
             placement="right"
             title="캐러셀"
           >
-            <IconButton title="Carousel">
-              <ViewCarouselOutlined fontSize="medium" />
+            <IconButton
+              sx={{ backgroundColor: selectedMenu === 'carousel' ? '#1F1F1F' : 'transparent' }}
+              onClick={() => {
+                onChangeSelectedMenu('carousel');
+              }}
+            >
+              <ViewCarouselOutlined
+                fontSize="medium"
+                sx={{
+                  '&.MuiSvgIcon-root': {
+                    fill: selectedMenu === 'carousel' ? 'white' : 'black',
+                  },
+                }}
+              />
             </IconButton>
           </Tooltip>
         </ListItem>
@@ -70,8 +123,20 @@ export default function ComponentMenu() {
             placement="right"
             title="버튼"
           >
-            <IconButton title="Button">
-              <SmartButtonOutlined fontSize="medium" />
+            <IconButton
+              sx={{ backgroundColor: selectedMenu === 'button' ? '#1F1F1F' : 'transparent' }}
+              onClick={() => {
+                onChangeSelectedMenu('button');
+              }}
+            >
+              <SmartButtonOutlined
+                fontSize="medium"
+                sx={{
+                  '&.MuiSvgIcon-root': {
+                    fill: selectedMenu === 'button' ? 'white' : 'black',
+                  },
+                }}
+              />
             </IconButton>
           </Tooltip>
         </ListItem>

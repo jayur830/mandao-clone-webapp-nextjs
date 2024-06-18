@@ -4,7 +4,7 @@ import { Box, Divider, Paper, Stack, Tab, Tabs } from '@mui/material';
 import { useState } from 'react';
 
 const tabs = [
-  { value: 'preference', label: '속성' },
+  { value: 'attribute', label: '속성' },
   { value: 'page', label: '페이지' },
   { value: 'event', label: '이벤트' },
   { value: 'material', label: '재료' },
@@ -12,7 +12,7 @@ const tabs = [
 ];
 
 export default function ControlMenu() {
-  const [tab, setTab] = useState<'preference' | 'page' | 'event' | 'material' | 'deployment'>('preference');
+  const [tab, setTab] = useState<'attribute' | 'page' | 'event' | 'material' | 'deployment'>('attribute');
 
   return (
     <Paper
