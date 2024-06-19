@@ -1,6 +1,6 @@
 'use client';
 
-import { AppBar, Grid, Toolbar } from '@mui/material';
+import { AppBar, Grid, Toolbar, Typography } from '@mui/material';
 import { useState } from 'react';
 
 import ComponentMenu from '@/components/ComponentMenu';
@@ -18,7 +18,15 @@ export default function Page() {
         position="static"
         sx={{ backgroundColor: '#1F1F1F' }}
       >
-        <Toolbar></Toolbar>
+        <Toolbar>
+          <Grid
+            container
+            alignItems="flex-end"
+          >
+            <Typography fontSize={4}>300억</Typography>
+            <Typography variant="h4">만다오</Typography>
+          </Grid>
+        </Toolbar>
       </AppBar>
       <Grid
         container
@@ -38,7 +46,7 @@ export default function Page() {
           paddingX={3}
           paddingY={16}
           overflow="scroll"
-          onMouseDown={() => {
+          onClick={() => {
             setSelectedComponent(undefined);
           }}
         >
@@ -51,7 +59,10 @@ export default function Page() {
               onChangeBreakpoint={setBreakpoint}
             />
           </Grid>
-          <Workspace breakpoint={breakpoint} />
+          <Workspace
+            breakpoint={breakpoint}
+            selectedComponent={selectedComponent}
+          />
         </Grid>
         <ControlMenu />
       </Grid>
