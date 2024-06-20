@@ -2,12 +2,14 @@ import { PanoramaOutlined, PhotoSizeSelectActualOutlined, VideoCameraBackOutline
 import { Button, Grid, Paper, Typography } from '@mui/material';
 import { useState } from 'react';
 
+import Block from './Block';
+
 export interface WorkspaceProps {
   breakpoint: 'desktop' | 'tablet' | 'mobile';
   selectedComponent?: 'block' | 'image' | 'video' | 'carousel' | 'button';
 }
 
-type Data =
+export type Data =
   | {
       type: 'block';
       children?: Data[];
@@ -71,100 +73,30 @@ export default function Workspace({ breakpoint, selectedComponent }: WorkspacePr
           }
         }}
       >
-        {data.map((item, i) => {
-          switch (item.type) {
-            case 'block':
-              return (
-                <Grid
-                  key={i}
-                  container
-                  justifyContent="center"
-                  alignItems="center"
-                  height={200}
-                >
-                  <Typography
-                    variant="h4"
-                    fontWeight={600}
-                    color="grey.400"
-                  >
-                    블록
-                  </Typography>
-                </Grid>
-              );
-            case 'image':
-              return (
-                <Grid
-                  key={i}
-                  container
-                  direction="column"
-                  justifyContent="center"
-                  alignItems="center"
-                  height={200}
-                  sx={{ cursor: 'pointer' }}
-                >
-                  <PanoramaOutlined
-                    fontSize="large"
-                    sx={{ color: 'grey.400' }}
-                  />
-                  <Typography
-                    variant="h6"
-                    fontWeight={600}
-                    color="grey.400"
-                  >
-                    이미지를 올리세요.
-                  </Typography>
-                </Grid>
-              );
-            case 'video':
-              return (
-                <Grid
-                  key={i}
-                  container
-                  direction="column"
-                  justifyContent="center"
-                  alignItems="center"
-                  height={200}
-                  sx={{ cursor: 'pointer' }}
-                >
-                  <VideoCameraBackOutlined
-                    fontSize="large"
-                    sx={{ color: 'grey.400' }}
-                  />
-                  <Typography
-                    variant="h6"
-                    fontWeight={600}
-                    color="grey.400"
-                  >
-                    비디오를 올리세요.
-                  </Typography>
-                </Grid>
-              );
-            case 'carousel':
-              return (
-                <Grid
-                  key={i}
-                  container
-                  justifyContent="center"
-                  alignItems="center"
-                  height={200}
-                >
-                  <Typography>Carousel</Typography>
-                </Grid>
-              );
-            case 'button':
-              return (
-                <Button
-                  key={i}
-                  variant="contained"
-                  fullWidth
-                >
-                  Button
-                </Button>
-              );
-            default:
-              return null;
-          }
-        })}
+        {/* 블록을 재귀해야됨. 근데 재귀적으로 state 업데이트하는 방법을 모르겠음. dispatch callback을 재귀해야하나 */}
+        <Block
+          onClick={() => {
+            console.log('click block');
+            // switch (selectedComponent) {
+            //   case 'block':
+            //     setData((state) => [...state, { type: 'block' }]);
+            //     break;
+            //   case 'image':
+            //     setData((state) => [...state, { type: 'image' }]);
+            //     break;
+            //   case 'video':
+            //     setData((state) => [...state, { type: 'video' }]);
+            //     break;
+            //   case 'carousel':
+            //     setData((state) => [...state, { type: 'carousel', items: [] }]);
+            //     break;
+            //   case 'button':
+            //     setData((state) => [...state, { type: 'button', text: '텍스트' }]);
+            //     break;
+            // }
+          }}
+          childrenItems={data}
+        />
       </Paper>
     </>
   );
