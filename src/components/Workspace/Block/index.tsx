@@ -1,19 +1,20 @@
 import { PanoramaOutlined, VideoCameraBackOutlined } from '@mui/icons-material';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 
 import { Data } from '..';
 
 export interface BlockProps {
-  onClick(): void;
+  onClick(dataIndex: number[]): void;
+  dataIndex: number[];
   childrenItems: Data[];
 }
 
-export default function Block({ onClick, childrenItems }: BlockProps) {
+export default function Block({ onClick, dataIndex, childrenItems }: BlockProps) {
   return (
     <Grid
       onClick={(e) => {
         e.stopPropagation();
-        onClick();
+        onClick(dataIndex);
       }}
     >
       {childrenItems.map((item, i) => {
@@ -21,22 +22,12 @@ export default function Block({ onClick, childrenItems }: BlockProps) {
           case 'block':
             if (item.children && item.children.length > 0) {
               return (
-                <Grid
+                <Block
                   key={i}
-                  container
-                  justifyContent="center"
-                  alignItems="center"
-                  height={200}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onClick();
-                  }}
-                >
-                  <Block
-                    onClick={onClick}
-                    childrenItems={item.children}
-                  />
-                </Grid>
+                  onClick={onClick}
+                  dataIndex={[...dataIndex, i]}
+                  childrenItems={item.children}
+                />
               );
             }
 
@@ -49,7 +40,7 @@ export default function Block({ onClick, childrenItems }: BlockProps) {
                 height={200}
                 onClick={(e) => {
                   e.stopPropagation();
-                  onClick();
+                  onClick([...dataIndex, i]);
                 }}
               >
                 <Typography
