@@ -1,6 +1,34 @@
 import { ImageOutlined, SmartButtonOutlined, SmartDisplayOutlined, ViewAgendaOutlined, ViewCarouselOutlined } from '@mui/icons-material';
 import { IconButton, List, ListItem, Paper, Tooltip } from '@mui/material';
 
+const list = [
+  {
+    title: '블록',
+    value: 'block',
+    icon: ViewAgendaOutlined,
+  },
+  {
+    title: '이미지',
+    value: 'image',
+    icon: ImageOutlined,
+  },
+  {
+    title: '비디오',
+    value: 'video',
+    icon: SmartDisplayOutlined,
+  },
+  {
+    title: '캐러셀',
+    value: 'carousel',
+    icon: ViewCarouselOutlined,
+  },
+  {
+    title: '버튼',
+    value: 'button',
+    icon: SmartButtonOutlined,
+  },
+];
+
 export interface ComponentMenuProps {
   selectedMenu: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined;
   onChangeSelectedMenu(value: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined): void;
@@ -21,125 +49,39 @@ export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: Co
           '.MuiListItem-root': {
             justifyContent: 'center',
             padding: 0,
-            '.MuiSvgIcon-root': { color: 'common.black' },
           },
         }}
       >
-        {/* Block */}
-        <ListItem>
-          <Tooltip
-            placement="right"
-            title="블록"
-          >
-            <IconButton
-              sx={{ backgroundColor: selectedMenu === 'block' ? '#1F1F1F' : 'transparent' }}
-              onClick={() => {
-                onChangeSelectedMenu(selectedMenu ? null : 'block');
-              }}
+        {list.map(({ title, value, icon: Icon }, i) => (
+          <ListItem key={i}>
+            <Tooltip
+              placement="right"
+              title={title}
             >
-              <ViewAgendaOutlined
-                fontSize="medium"
+              <IconButton
                 sx={{
-                  '&.MuiSvgIcon-root': {
-                    fill: selectedMenu === 'block' ? 'white' : 'black',
+                  backgroundColor: selectedMenu === value ? '#1F1F1F' : 'transparent',
+                  ':hover': {
+                    backgroundColor: selectedMenu === value ? '#1F1F1F' : 'rgba(0, 0, 0, 0.04)',
                   },
                 }}
-              />
-            </IconButton>
-          </Tooltip>
-        </ListItem>
-        {/* Image */}
-        <ListItem>
-          <Tooltip
-            placement="right"
-            title="이미지"
-          >
-            <IconButton
-              sx={{ backgroundColor: selectedMenu === 'image' ? '#1F1F1F' : 'transparent' }}
-              onClick={() => {
-                onChangeSelectedMenu(selectedMenu ? null : 'image');
-              }}
-            >
-              <ImageOutlined
-                fontSize="medium"
-                sx={{
-                  '&.MuiSvgIcon-root': {
-                    fill: selectedMenu === 'image' ? 'white' : 'black',
-                  },
+                onClick={() => {
+                  const menu = value as Exclude<typeof selectedMenu, null | undefined>;
+                  onChangeSelectedMenu(selectedMenu === menu ? null : menu);
                 }}
-              />
-            </IconButton>
-          </Tooltip>
-        </ListItem>
-        {/* Video (Asset, Youtube) */}
-        <ListItem>
-          <Tooltip
-            placement="right"
-            title="비디오 (에셋, 유튜브)"
-          >
-            <IconButton
-              sx={{ backgroundColor: selectedMenu === 'video' ? '#1F1F1F' : 'transparent' }}
-              onClick={() => {
-                onChangeSelectedMenu(selectedMenu ? null : 'video');
-              }}
-            >
-              <SmartDisplayOutlined
-                fontSize="medium"
-                sx={{
-                  '&.MuiSvgIcon-root': {
-                    fill: selectedMenu === 'video' ? 'white' : 'black',
-                  },
-                }}
-              />
-            </IconButton>
-          </Tooltip>
-        </ListItem>
-        {/* Carousel */}
-        <ListItem>
-          <Tooltip
-            placement="right"
-            title="캐러셀"
-          >
-            <IconButton
-              sx={{ backgroundColor: selectedMenu === 'carousel' ? '#1F1F1F' : 'transparent' }}
-              onClick={() => {
-                onChangeSelectedMenu(selectedMenu ? null : 'carousel');
-              }}
-            >
-              <ViewCarouselOutlined
-                fontSize="medium"
-                sx={{
-                  '&.MuiSvgIcon-root': {
-                    fill: selectedMenu === 'carousel' ? 'white' : 'black',
-                  },
-                }}
-              />
-            </IconButton>
-          </Tooltip>
-        </ListItem>
-        {/* Button */}
-        <ListItem>
-          <Tooltip
-            placement="right"
-            title="버튼"
-          >
-            <IconButton
-              sx={{ backgroundColor: selectedMenu === 'button' ? '#1F1F1F' : 'transparent' }}
-              onClick={() => {
-                onChangeSelectedMenu(selectedMenu ? null : 'button');
-              }}
-            >
-              <SmartButtonOutlined
-                fontSize="medium"
-                sx={{
-                  '&.MuiSvgIcon-root': {
-                    fill: selectedMenu === 'button' ? 'white' : 'black',
-                  },
-                }}
-              />
-            </IconButton>
-          </Tooltip>
-        </ListItem>
+              >
+                <Icon
+                  fontSize="medium"
+                  sx={{
+                    '&.MuiSvgIcon-root': {
+                      fill: selectedMenu === value ? 'white' : 'black',
+                    },
+                  }}
+                />
+              </IconButton>
+            </Tooltip>
+          </ListItem>
+        ))}
       </List>
     </Paper>
   );
