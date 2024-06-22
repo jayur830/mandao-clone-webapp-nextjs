@@ -64,11 +64,13 @@ export default function Block({ onClick, onSelect, dataIndex, childrenItems }: B
               </Grid>
             );
           case 'image':
+            const { type, ...props } = item;
             return (
               <ImageBlock
                 key={i}
                 dataIndex={[...dataIndex, i]}
                 onSelect={onSelect}
+                {...props}
               />
             );
           case 'video':
@@ -93,8 +95,11 @@ export default function Block({ onClick, onSelect, dataIndex, childrenItems }: B
                 key={i}
                 variant="contained"
                 fullWidth
+                onClick={() => {
+                  onSelect([...dataIndex, i]);
+                }}
               >
-                Button
+                {item.text}
               </Button>
             );
           default:

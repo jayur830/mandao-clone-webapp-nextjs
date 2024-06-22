@@ -1,12 +1,15 @@
 import { PanoramaOutlined } from '@mui/icons-material';
 import { Grid, Typography } from '@mui/material';
+import Image from 'next/image';
 
-export interface ImageBlockProps {
+import { Data } from '../..';
+
+export interface ImageBlockProps extends Omit<Extract<Data, { type: 'image' }>, 'type'> {
   dataIndex: number[];
   onSelect(dataIndex: number[]): void;
 }
 
-export default function ImageBlock({ dataIndex, onSelect }: ImageBlockProps) {
+export default function ImageBlock({ dataIndex, onSelect, src }: ImageBlockProps) {
   return (
     <>
       <Grid
@@ -14,7 +17,7 @@ export default function ImageBlock({ dataIndex, onSelect }: ImageBlockProps) {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        height={200}
+        minHeight={200}
         onClick={(e) => {
           e.stopPropagation();
           onSelect(dataIndex);
@@ -27,17 +30,29 @@ export default function ImageBlock({ dataIndex, onSelect }: ImageBlockProps) {
           },
         }}
       >
-        <PanoramaOutlined
-          fontSize="large"
-          sx={{ color: 'grey.400' }}
-        />
-        <Typography
-          variant="h6"
-          fontWeight={600}
-          color="grey.400"
-        >
-          이미지를 올리세요.
-        </Typography>
+        {src ? (
+          <Image
+            src={src}
+            alt="image"
+            width={720}
+            height={480}
+            style={{ width: '100%', height: 'auto' }}
+          />
+        ) : (
+          <>
+            <PanoramaOutlined
+              fontSize="large"
+              sx={{ color: 'grey.400' }}
+            />
+            <Typography
+              variant="h6"
+              fontWeight={600}
+              color="grey.400"
+            >
+              이미지를 올리세요.
+            </Typography>
+          </>
+        )}
       </Grid>
     </>
   );

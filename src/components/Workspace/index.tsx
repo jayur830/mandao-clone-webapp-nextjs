@@ -4,8 +4,11 @@ import { useState } from 'react';
 import Block from './Block';
 
 export interface WorkspaceProps {
+  data: Data[];
+  onChangeData(data: Data[]): void;
   breakpoint: 'desktop' | 'tablet' | 'mobile';
   selectedComponent: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined;
+  onChangeSelectedDataIndex(value: number[]): void;
 }
 
 export type Data =
@@ -15,7 +18,7 @@ export type Data =
     }
   | {
       type: 'image';
-      url?: string;
+      src?: string;
     }
   | {
       type: 'video';
@@ -36,9 +39,7 @@ const widthMap = {
   mobile: 512,
 };
 
-export default function Workspace({ breakpoint, selectedComponent }: WorkspaceProps) {
-  const [data, setData] = useState<Data[]>([]);
-
+export default function Workspace({ data, onChangeData, breakpoint, selectedComponent, onChangeSelectedDataIndex }: WorkspaceProps) {
   return (
     <>
       <Paper
@@ -55,19 +56,19 @@ export default function Workspace({ breakpoint, selectedComponent }: WorkspacePr
           e.stopPropagation();
           switch (selectedComponent) {
             case 'block':
-              setData((state) => [...state, { type: 'block' }]);
+              onChangeData([...data, { type: 'block' }]);
               break;
             case 'image':
-              setData((state) => [...state, { type: 'image' }]);
+              onChangeData([...data, { type: 'image' }]);
               break;
             case 'video':
-              setData((state) => [...state, { type: 'video' }]);
+              onChangeData([...data, { type: 'video' }]);
               break;
             case 'carousel':
-              setData((state) => [...state, { type: 'carousel', items: [] }]);
+              onChangeData([...data, { type: 'carousel', items: [] }]);
               break;
             case 'button':
-              setData((state) => [...state, { type: 'button', text: '텍스트' }]);
+              onChangeData([...data, { type: 'button', text: '텍스트' }]);
               break;
           }
         }}
@@ -109,17 +110,17 @@ export default function Workspace({ breakpoint, selectedComponent }: WorkspacePr
                   return state;
               }
             }
-            setData((state) => recursive(state, 0));
+            onChangeData(recursive(data, 0));
           }}
           onSelect={(dataIndex) => {
-            const [dataItem] = dataIndex.reduce((state, index) => {
-              const item = state[index];
-              if (item.type === 'block') {
-                return item.children || [];
-              }
-              return [item];
-            }, data);
-            console.log('dataItem:', dataItem);
+            // const [dataItem] = dataIndex.reduce((state, index) => {
+            //   const item = state[index];
+            //   if (item.type === 'block') {
+            //     return item.children || [];
+            //   }
+            //   return [item];
+            // }, data);
+            onChangeSelectedDataIndex(dataIndex);
           }}
           dataIndex={[]}
           childrenItems={data}

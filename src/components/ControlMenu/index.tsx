@@ -1,7 +1,11 @@
 'use client';
 
-import { Box, Divider, Paper, Stack, Tab, Tabs } from '@mui/material';
+import { Box, Button, ButtonGroup, Divider, Grid, Paper, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { get } from 'lodash';
 import { useState } from 'react';
+
+import { Data } from '../Workspace';
+import ImageControl from './ImageControl';
 
 const tabs = [
   { value: 'attribute', label: '속성' },
@@ -11,8 +15,14 @@ const tabs = [
   { value: 'deployment', label: '배포' },
 ];
 
-export default function ControlMenu() {
-  const [tab, setTab] = useState<'attribute' | 'page' | 'event' | 'material' | 'deployment'>('attribute');
+export interface ControlMenuProps {
+  data: Data[];
+  onChangeData(data: Data[]): void;
+  selectedDataIndex?: number[] | null | undefined;
+}
+
+export default function ControlMenu({ data, onChangeData, selectedDataIndex }: ControlMenuProps) {
+  // const [tab, setTab] = useState<'attribute' | 'page' | 'event' | 'material' | 'deployment'>('attribute');
 
   return (
     <Paper
@@ -21,7 +31,7 @@ export default function ControlMenu() {
       sx={{ width: 400, height: '100%' }}
     >
       <Stack direction="column">
-        <Box padding={2}>
+        {/* <Box padding={2}>
           <Tabs
             value={tab}
             onChange={(_, v) => {
@@ -65,14 +75,45 @@ export default function ControlMenu() {
             ))}
           </Tabs>
         </Box>
-        <Divider />
-        <Box padding={2}></Box>
-        <Divider />
-        <Box padding={2}></Box>
-        <Divider />
-        <Box padding={2}></Box>
-        <Divider />
-        <Box padding={2}></Box>
+        <Divider /> */}
+        {/* {focusedElement && (
+          <>
+            {JSON.stringify(focusedElement, null, 2)}
+            <Box padding={2}></Box>
+            <Divider />
+            <Box padding={2}></Box>
+            <Divider />
+            <Box padding={2}></Box>
+            <Divider />
+            <Box padding={2}></Box>
+          </>
+        )} */}
+        {selectedDataIndex && selectedDataIndex.length > 0 && get(data, selectedDataIndex).type === 'image' && (
+          <ImageControl
+            onChangeImage={(base64) => {
+              function map(item: Data, i: number, current: number): Data {
+                if (selectedDataIndex && i === selectedDataIndex[current] && item.type === 'block' && item.children) {
+                  return {
+                    ...item,
+                    children: item.children.map((child, j) => map(child, j, current + 1)),
+                  };
+                }
+
+                switch (item.type) {
+                  case 'image':
+                    return {
+                      ...item,
+                      src: base64,
+                    };
+                  default:
+                    return item;
+                }
+              }
+
+              onChangeData(data.map((item, i) => map(item, i, 0)));
+            }}
+          />
+        )}
       </Stack>
     </Paper>
   );

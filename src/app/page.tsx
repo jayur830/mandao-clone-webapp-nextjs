@@ -6,11 +6,13 @@ import { useState } from 'react';
 import ComponentMenu from '@/components/ComponentMenu';
 import ControlMenu from '@/components/ControlMenu';
 import ResponsiveToolbar from '@/components/ResponsiveToolbar';
-import Workspace from '@/components/Workspace';
+import Workspace, { Data } from '@/components/Workspace';
 
 export default function Page() {
   const [breakpoint, setBreakpoint] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [selectedComponent, setSelectedComponent] = useState<'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined>();
+  const [data, setData] = useState<Data[]>([]);
+  const [selectedDataIndex, setSelectedDataIndex] = useState<number[]>();
 
   return (
     <>
@@ -60,11 +62,18 @@ export default function Page() {
             />
           </Grid>
           <Workspace
+            data={data}
+            onChangeData={setData}
             breakpoint={breakpoint}
             selectedComponent={selectedComponent}
+            onChangeSelectedDataIndex={setSelectedDataIndex}
           />
         </Grid>
-        <ControlMenu />
+        <ControlMenu
+          data={data}
+          onChangeData={setData}
+          selectedDataIndex={selectedDataIndex}
+        />
       </Grid>
     </>
   );
