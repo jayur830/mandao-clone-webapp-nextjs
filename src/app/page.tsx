@@ -10,7 +10,7 @@ import Workspace from '@/components/Workspace';
 
 export default function Page() {
   const [breakpoint, setBreakpoint] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
-  const [selectedComponent, setSelectedComponent] = useState<'block' | 'image' | 'video' | 'carousel' | 'button'>();
+  const [selectedComponent, setSelectedComponent] = useState<'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined>();
 
   return (
     <>

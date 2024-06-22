@@ -3,7 +3,7 @@ import { IconButton, List, ListItem, Paper, Tooltip } from '@mui/material';
 
 export interface ComponentMenuProps {
   selectedMenu: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined;
-  onChangeSelectedMenu(value: 'block' | 'image' | 'video' | 'carousel' | 'button'): void;
+  onChangeSelectedMenu(value: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined): void;
 }
 
 export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: ComponentMenuProps) {
@@ -34,7 +34,7 @@ export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: Co
             <IconButton
               sx={{ backgroundColor: selectedMenu === 'block' ? '#1F1F1F' : 'transparent' }}
               onClick={() => {
-                onChangeSelectedMenu('block');
+                onChangeSelectedMenu(selectedMenu ? null : 'block');
               }}
             >
               <ViewAgendaOutlined
@@ -57,7 +57,7 @@ export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: Co
             <IconButton
               sx={{ backgroundColor: selectedMenu === 'image' ? '#1F1F1F' : 'transparent' }}
               onClick={() => {
-                onChangeSelectedMenu('image');
+                onChangeSelectedMenu(selectedMenu ? null : 'image');
               }}
             >
               <ImageOutlined
@@ -80,7 +80,7 @@ export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: Co
             <IconButton
               sx={{ backgroundColor: selectedMenu === 'video' ? '#1F1F1F' : 'transparent' }}
               onClick={() => {
-                onChangeSelectedMenu('video');
+                onChangeSelectedMenu(selectedMenu ? null : 'video');
               }}
             >
               <SmartDisplayOutlined
@@ -103,7 +103,7 @@ export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: Co
             <IconButton
               sx={{ backgroundColor: selectedMenu === 'carousel' ? '#1F1F1F' : 'transparent' }}
               onClick={() => {
-                onChangeSelectedMenu('carousel');
+                onChangeSelectedMenu(selectedMenu ? null : 'carousel');
               }}
             >
               <ViewCarouselOutlined
@@ -126,7 +126,7 @@ export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: Co
             <IconButton
               sx={{ backgroundColor: selectedMenu === 'button' ? '#1F1F1F' : 'transparent' }}
               onClick={() => {
-                onChangeSelectedMenu('button');
+                onChangeSelectedMenu(selectedMenu ? null : 'button');
               }}
             >
               <SmartButtonOutlined

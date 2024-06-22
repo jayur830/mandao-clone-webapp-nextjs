@@ -5,7 +5,7 @@ import Block from './Block';
 
 export interface WorkspaceProps {
   breakpoint: 'desktop' | 'tablet' | 'mobile';
-  selectedComponent?: 'block' | 'image' | 'video' | 'carousel' | 'button';
+  selectedComponent: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined;
 }
 
 export type Data =
