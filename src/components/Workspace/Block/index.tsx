@@ -1,17 +1,18 @@
 import { Button, Grid, Typography } from '@mui/material';
 
 import { Data } from '..';
-import CarouselBlock from '../CarouselBlock';
-import ImageBlock from '../ImageBlock';
-import VideoBlock from '../VideoBlock';
+import CarouselBlock from './CarouselBlock';
+import ImageBlock from './ImageBlock';
+import VideoBlock from './VideoBlock';
 
 export interface BlockProps {
   onClick(dataIndex: number[]): void;
+  onSelect(dataIndex: number[]): void;
   dataIndex: number[];
   childrenItems: Data[];
 }
 
-export default function Block({ onClick, dataIndex, childrenItems }: BlockProps) {
+export default function Block({ onClick, onSelect, dataIndex, childrenItems }: BlockProps) {
   return (
     <Grid
       onClick={(e) => {
@@ -27,6 +28,7 @@ export default function Block({ onClick, dataIndex, childrenItems }: BlockProps)
                 <Block
                   key={i}
                   onClick={onClick}
+                  onSelect={onSelect}
                   dataIndex={[...dataIndex, i]}
                   childrenItems={item.children}
                 />
@@ -62,11 +64,29 @@ export default function Block({ onClick, dataIndex, childrenItems }: BlockProps)
               </Grid>
             );
           case 'image':
-            return <ImageBlock key={i} />;
+            return (
+              <ImageBlock
+                key={i}
+                dataIndex={[...dataIndex, i]}
+                onSelect={onSelect}
+              />
+            );
           case 'video':
-            return <VideoBlock key={i} />;
+            return (
+              <VideoBlock
+                key={i}
+                dataIndex={[...dataIndex, i]}
+                onSelect={onSelect}
+              />
+            );
           case 'carousel':
-            return <CarouselBlock key={i} />;
+            return (
+              <CarouselBlock
+                key={i}
+                dataIndex={[...dataIndex, i]}
+                onSelect={onSelect}
+              />
+            );
           case 'button':
             return (
               <Button

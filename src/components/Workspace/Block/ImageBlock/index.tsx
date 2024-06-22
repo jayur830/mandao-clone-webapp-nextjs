@@ -1,10 +1,12 @@
 import { PanoramaOutlined } from '@mui/icons-material';
-import { Dialog, Grid, Typography } from '@mui/material';
-import { useState } from 'react';
+import { Grid, Typography } from '@mui/material';
 
-export default function ImageBlock() {
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
+export interface ImageBlockProps {
+  dataIndex: number[];
+  onSelect(dataIndex: number[]): void;
+}
 
+export default function ImageBlock({ dataIndex, onSelect }: ImageBlockProps) {
   return (
     <>
       <Grid
@@ -15,7 +17,7 @@ export default function ImageBlock() {
         height={200}
         onClick={(e) => {
           e.stopPropagation();
-          setOpenDialog(true);
+          onSelect(dataIndex);
         }}
         sx={{
           cursor: 'pointer',
@@ -37,16 +39,6 @@ export default function ImageBlock() {
           이미지를 올리세요.
         </Typography>
       </Grid>
-      <Dialog
-        open={openDialog}
-        onClose={(_, reason) => {
-          if (reason === 'backdropClick') {
-            setOpenDialog(false);
-          }
-        }}
-      >
-        hello
-      </Dialog>
     </>
   );
 }

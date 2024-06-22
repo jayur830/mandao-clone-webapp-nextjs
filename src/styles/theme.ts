@@ -6,6 +6,16 @@ export const palette = createPalette({});
 export const theme = createTheme({
   palette,
   components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'none',
+          ':hover': {
+            boxShadow: 'none',
+          },
+        },
+      },
+    },
     MuiTooltip: {
       styleOverrides: {
         tooltip: {

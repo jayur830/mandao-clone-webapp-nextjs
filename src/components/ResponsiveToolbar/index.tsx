@@ -3,6 +3,21 @@
 import { DesktopWindowsOutlined, SmartphoneOutlined, TabletMacOutlined } from '@mui/icons-material';
 import { IconButton, Paper } from '@mui/material';
 
+const list = [
+  {
+    value: 'desktop',
+    icon: DesktopWindowsOutlined,
+  },
+  {
+    value: 'tablet',
+    icon: TabletMacOutlined,
+  },
+  {
+    value: 'mobile',
+    icon: SmartphoneOutlined,
+  },
+];
+
 export interface ResponsiveToolbarProps {
   breakpoint: 'desktop' | 'tablet' | 'mobile';
   onChangeBreakpoint(value: 'desktop' | 'tablet' | 'mobile'): void;
@@ -19,53 +34,26 @@ export default function ResponsiveToolbar({ breakpoint, onChangeBreakpoint }: Re
         borderRadius: 99,
         padding: 2,
         paddingY: 1,
-        '.MuiSvgIcon-root': {
-          color: 'common.black',
-        },
       }}
     >
-      <IconButton
-        sx={{ backgroundColor: breakpoint === 'desktop' ? '#1F1F1F' : 'transparent' }}
-        onClick={() => {
-          onChangeBreakpoint('desktop');
-        }}
-      >
-        <DesktopWindowsOutlined
+      {list.map(({ value, icon: Icon }, i) => (
+        <IconButton
+          key={i}
           sx={{
-            '&.MuiSvgIcon-root': {
-              color: breakpoint === 'desktop' ? 'common.white' : 'common.black',
-            },
+            backgroundColor: breakpoint === value ? '#1F1F1F' : 'transparent',
+            ':hover': { backgroundColor: breakpoint === value ? '#1F1F1F' : 'rgba(0, 0, 0, 0.1)' },
           }}
-        />
-      </IconButton>
-      <IconButton
-        sx={{ backgroundColor: breakpoint === 'tablet' ? '#1F1F1F' : 'transparent' }}
-        onClick={() => {
-          onChangeBreakpoint('tablet');
-        }}
-      >
-        <TabletMacOutlined
-          sx={{
-            '&.MuiSvgIcon-root': {
-              color: breakpoint === 'tablet' ? 'common.white' : 'common.black',
-            },
+          onClick={() => {
+            onChangeBreakpoint(value as typeof breakpoint);
           }}
-        />
-      </IconButton>
-      <IconButton
-        sx={{ backgroundColor: breakpoint === 'mobile' ? '#1F1F1F' : 'transparent' }}
-        onClick={() => {
-          onChangeBreakpoint('mobile');
-        }}
-      >
-        <SmartphoneOutlined
-          sx={{
-            '&.MuiSvgIcon-root': {
-              color: breakpoint === 'mobile' ? 'common.white' : 'common.black',
-            },
-          }}
-        />
-      </IconButton>
+        >
+          <Icon
+            sx={{
+              color: breakpoint === value ? 'common.white' : 'common.black',
+            }}
+          />
+        </IconButton>
+      ))}
     </Paper>
   );
 }

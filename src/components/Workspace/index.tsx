@@ -111,6 +111,16 @@ export default function Workspace({ breakpoint, selectedComponent }: WorkspacePr
             }
             setData((state) => recursive(state, 0));
           }}
+          onSelect={(dataIndex) => {
+            const [dataItem] = dataIndex.reduce((state, index) => {
+              const item = state[index];
+              if (item.type === 'block') {
+                return item.children || [];
+              }
+              return [item];
+            }, data);
+            console.log('dataItem:', dataItem);
+          }}
           dataIndex={[]}
           childrenItems={data}
         />

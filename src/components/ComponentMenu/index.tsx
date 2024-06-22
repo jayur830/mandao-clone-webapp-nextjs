@@ -62,7 +62,7 @@ export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: Co
                 sx={{
                   backgroundColor: selectedMenu === value ? '#1F1F1F' : 'transparent',
                   ':hover': {
-                    backgroundColor: selectedMenu === value ? '#1F1F1F' : 'rgba(0, 0, 0, 0.04)',
+                    backgroundColor: selectedMenu === value ? '#1F1F1F' : 'rgba(0, 0, 0, 0.1)',
                   },
                 }}
                 onClick={() => {
@@ -73,9 +73,7 @@ export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: Co
                 <Icon
                   fontSize="medium"
                   sx={{
-                    '&.MuiSvgIcon-root': {
-                      fill: selectedMenu === value ? 'white' : 'black',
-                    },
+                    color: selectedMenu === value ? 'common.white' : 'common.black',
                   }}
                 />
               </IconButton>
