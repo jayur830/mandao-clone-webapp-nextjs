@@ -39,8 +39,6 @@ const widthMap = {
 export default function Workspace({ breakpoint, selectedComponent }: WorkspaceProps) {
   const [data, setData] = useState<Data[]>([]);
 
-  console.log('data:', data);
-
   return (
     <>
       <Paper
@@ -79,13 +77,17 @@ export default function Workspace({ breakpoint, selectedComponent }: WorkspacePr
           onClick={(dataIndex) => {
             function recursive(state: Data[], index: number): Data[] {
               if (index < dataIndex.length) {
-                console.log('index:', index, 'dataIndex:', dataIndex[index], state);
                 return state.map((item, i) => {
-                  if (i === dataIndex[index] && item.type === 'block') {
-                    return {
-                      ...item,
-                      children: recursive(item.children || [], index + 1),
-                    };
+                  if (i === dataIndex[index]) {
+                    switch (item.type) {
+                      case 'block':
+                        return {
+                          ...item,
+                          children: recursive(item.children || [], index + 1),
+                        };
+                      default:
+                        return item;
+                    }
                   }
 
                   return item;

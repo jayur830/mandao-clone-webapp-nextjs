@@ -1,7 +1,9 @@
-import { PanoramaOutlined, VideoCameraBackOutlined } from '@mui/icons-material';
 import { Button, Grid, Typography } from '@mui/material';
 
 import { Data } from '..';
+import CarouselBlock from '../CarouselBlock';
+import ImageBlock from '../ImageBlock';
+import VideoBlock from '../VideoBlock';
 
 export interface BlockProps {
   onClick(dataIndex: number[]): void;
@@ -42,6 +44,13 @@ export default function Block({ onClick, dataIndex, childrenItems }: BlockProps)
                   e.stopPropagation();
                   onClick([...dataIndex, i]);
                 }}
+                sx={{
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  ':hover': {
+                    backgroundColor: 'grey.100',
+                  },
+                }}
               >
                 <Typography
                   variant="h4"
@@ -53,65 +62,11 @@ export default function Block({ onClick, dataIndex, childrenItems }: BlockProps)
               </Grid>
             );
           case 'image':
-            return (
-              <Grid
-                key={i}
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-                height={200}
-                sx={{ cursor: 'pointer' }}
-              >
-                <PanoramaOutlined
-                  fontSize="large"
-                  sx={{ color: 'grey.400' }}
-                />
-                <Typography
-                  variant="h6"
-                  fontWeight={600}
-                  color="grey.400"
-                >
-                  이미지를 올리세요.
-                </Typography>
-              </Grid>
-            );
+            return <ImageBlock key={i} />;
           case 'video':
-            return (
-              <Grid
-                key={i}
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-                height={200}
-                sx={{ cursor: 'pointer' }}
-              >
-                <VideoCameraBackOutlined
-                  fontSize="large"
-                  sx={{ color: 'grey.400' }}
-                />
-                <Typography
-                  variant="h6"
-                  fontWeight={600}
-                  color="grey.400"
-                >
-                  비디오를 올리세요.
-                </Typography>
-              </Grid>
-            );
+            return <VideoBlock key={i} />;
           case 'carousel':
-            return (
-              <Grid
-                key={i}
-                container
-                justifyContent="center"
-                alignItems="center"
-                height={200}
-              >
-                <Typography>Carousel</Typography>
-              </Grid>
-            );
+            return <CarouselBlock key={i} />;
           case 'button':
             return (
               <Button
