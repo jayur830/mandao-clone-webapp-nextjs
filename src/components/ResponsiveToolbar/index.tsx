@@ -1,7 +1,8 @@
 'use client';
 
 import { DesktopWindowsOutlined, SmartphoneOutlined, TabletMacOutlined } from '@mui/icons-material';
-import { IconButton, Paper } from '@mui/material';
+import { IconButton, Paper, Theme, useMediaQuery } from '@mui/material';
+import { useEffect } from 'react';
 
 const list = [
   {
@@ -24,7 +25,18 @@ export interface ResponsiveToolbarProps {
 }
 
 export default function ResponsiveToolbar({ breakpoint, onChangeBreakpoint }: ResponsiveToolbarProps) {
-  return (
+  const isTablet = useMediaQuery<Theme>((theme) => theme.breakpoints.between('md', 'lg'));
+  const isMobile = useMediaQuery<Theme>((theme) => theme.breakpoints.down('md'));
+
+  useEffect(() => {
+    if (isTablet && breakpoint === 'desktop') {
+      onChangeBreakpoint('tablet');
+    } else if (isMobile && ['desktop', 'tablet'].includes(breakpoint)) {
+      onChangeBreakpoint('mobile');
+    }
+  }, [onChangeBreakpoint, breakpoint, isMobile, isTablet]);
+
+  return !isMobile ? (
     <Paper
       elevation={15}
       sx={{
@@ -36,7 +48,7 @@ export default function ResponsiveToolbar({ breakpoint, onChangeBreakpoint }: Re
         paddingY: 1,
       }}
     >
-      {list.map(({ value, icon: Icon }, i) => (
+      {list.slice(+isTablet).map(({ value, icon: Icon }, i) => (
         <IconButton
           key={i}
           sx={{
@@ -55,5 +67,7 @@ export default function ResponsiveToolbar({ breakpoint, onChangeBreakpoint }: Re
         </IconButton>
       ))}
     </Paper>
+  ) : (
+    <></>
   );
 }
