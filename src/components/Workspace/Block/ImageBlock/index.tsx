@@ -2,7 +2,7 @@ import { PanoramaOutlined } from '@mui/icons-material';
 import { Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 
-import { Data } from '../..';
+import { Data } from '@/types/block';
 
 export interface ImageBlockProps extends Omit<Extract<Data, { type: 'image' }>, 'type'> {
   dataIndex: number[];

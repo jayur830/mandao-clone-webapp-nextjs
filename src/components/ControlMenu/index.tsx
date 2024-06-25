@@ -1,19 +1,20 @@
 'use client';
 
-import { Box, Button, ButtonGroup, Divider, Grid, Paper, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { Paper, Stack } from '@mui/material';
 import { get } from 'lodash';
-import { useState } from 'react';
 
-import { Data } from '../Workspace';
+import { Data } from '@/types/block';
+
+import ButtonControl from './ButtonControl';
 import ImageControl from './ImageControl';
 
-const tabs = [
-  { value: 'attribute', label: '속성' },
-  { value: 'page', label: '페이지' },
-  { value: 'event', label: '이벤트' },
-  { value: 'material', label: '재료' },
-  { value: 'deployment', label: '배포' },
-];
+// const tabs = [
+//   { value: 'attribute', label: '속성' },
+//   { value: 'page', label: '페이지' },
+//   { value: 'event', label: '이벤트' },
+//   { value: 'material', label: '재료' },
+//   { value: 'deployment', label: '배포' },
+// ];
 
 export interface ControlMenuProps {
   data: Data[];
@@ -92,22 +93,57 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
           <ImageControl
             onChangeImage={(base64) => {
               function map(item: Data, i: number, current: number): Data {
-                if (selectedDataIndex && i === selectedDataIndex[current] && item.type === 'block' && item.children) {
-                  return {
-                    ...item,
-                    children: item.children.map((child, j) => map(child, j, current + 1)),
-                  };
-                }
-
-                switch (item.type) {
-                  case 'image':
+                if (selectedDataIndex && i === selectedDataIndex[current]) {
+                  if (item.type === 'block' && item.children) {
                     return {
                       ...item,
-                      src: base64,
+                      children: item.children.map((child, j) => map(child, j, current + 1)),
                     };
-                  default:
-                    return item;
+                  }
+
+                  switch (item.type) {
+                    case 'image':
+                      return {
+                        ...item,
+                        src: base64,
+                      };
+                    default:
+                      return item;
+                  }
                 }
+
+                return item;
+              }
+
+              onChangeData(data.map((item, i) => map(item, i, 0)));
+            }}
+          />
+        )}
+        {selectedDataIndex && selectedDataIndex.length > 0 && get(data, selectedDataIndex).type === 'button' && (
+          <ButtonControl
+            data={get(data, selectedDataIndex)}
+            onChangeData={(changedData) => {
+              function map(item: Data, i: number, current: number): Data {
+                if (selectedDataIndex && i === selectedDataIndex[current]) {
+                  if (item.type === 'block' && item.children) {
+                    return {
+                      ...item,
+                      children: item.children.map((child, j) => map(child, j, current + 1)),
+                    };
+                  }
+
+                  switch (item.type) {
+                    case 'button':
+                      return {
+                        ...item,
+                        ...changedData,
+                      };
+                    default:
+                      return item;
+                  }
+                }
+
+                return item;
               }
 
               onChangeData(data.map((item, i) => map(item, i, 0)));

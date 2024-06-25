@@ -1,6 +1,7 @@
 import { Button, Grid, Typography } from '@mui/material';
 
-import { Data } from '..';
+import { Data } from '@/types/block';
+
 import CarouselBlock from './CarouselBlock';
 import ImageBlock from './ImageBlock';
 import VideoBlock from './VideoBlock';
@@ -95,9 +96,11 @@ export default function Block({ onClick, onSelect, dataIndex, childrenItems }: B
                 key={i}
                 variant="contained"
                 fullWidth
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   onSelect([...dataIndex, i]);
                 }}
+                sx={item.style}
               >
                 {item.text}
               </Button>

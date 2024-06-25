@@ -1,5 +1,6 @@
 import { Paper } from '@mui/material';
-import { useState } from 'react';
+
+import { Data } from '@/types/block';
 
 import Block from './Block';
 
@@ -10,28 +11,6 @@ export interface WorkspaceProps {
   selectedComponent: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined;
   onChangeSelectedDataIndex(value: number[]): void;
 }
-
-export type Data =
-  | {
-      type: 'block';
-      children?: Data[];
-    }
-  | {
-      type: 'image';
-      src?: string;
-    }
-  | {
-      type: 'video';
-      url?: string;
-    }
-  | {
-      type: 'carousel';
-      items: Data[];
-    }
-  | {
-      type: 'button';
-      text: string;
-    };
 
 const widthMap = {
   desktop: 1440,

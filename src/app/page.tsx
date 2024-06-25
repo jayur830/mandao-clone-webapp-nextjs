@@ -6,7 +6,8 @@ import { useState } from 'react';
 import ComponentMenu from '@/components/ComponentMenu';
 import ControlMenu from '@/components/ControlMenu';
 import ResponsiveToolbar from '@/components/ResponsiveToolbar';
-import Workspace, { Data } from '@/components/Workspace';
+import Workspace from '@/components/Workspace';
+import { Data } from '@/types/block';
 
 export default function Page() {
   const [breakpoint, setBreakpoint] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
