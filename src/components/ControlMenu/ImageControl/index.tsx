@@ -2,6 +2,8 @@ import { FileUploadOutlined } from '@mui/icons-material';
 import { Box, Button, ButtonGroup, Divider, Grid, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 
+import { Data } from '@/types/block';
+
 function getBase64(file: File) {
   const reader = new FileReader();
   reader.readAsDataURL(file);
@@ -13,10 +15,11 @@ function getBase64(file: File) {
 }
 
 export interface ImageControlProps {
-  onChangeImage(base64: string): void;
+  data: Omit<Extract<Data, { type: 'image' }>, 'type'>;
+  onChangeData(data: Omit<Extract<Data, { type: 'image' }>, 'type'>): void;
 }
 
-export default function ImageControl({ onChangeImage }: ImageControlProps) {
+export default function ImageControl({ data, onChangeData }: ImageControlProps) {
   const [uploadType, setUploadType] = useState<'file' | 'link'>('file');
   const [file, setFile] = useState<File | null | undefined>();
   const [url, setUrl] = useState<string>('');
@@ -72,7 +75,7 @@ export default function ImageControl({ onChangeImage }: ImageControlProps) {
               onChange={async (e) => {
                 if (e.target.files) {
                   setFile(e.target.files[0]);
-                  onChangeImage((await getBase64(e.target.files[0])) as unknown as string);
+                  onChangeData({ ...data, src: (await getBase64(e.target.files[0])) as unknown as string });
                 }
               }}
               style={{ display: 'none' }}
@@ -126,7 +129,7 @@ export default function ImageControl({ onChangeImage }: ImageControlProps) {
             <Button
               variant="contained"
               onClick={() => {
-                onChangeImage(url);
+                onChangeData({ ...data, src: url });
               }}
             >
               적용

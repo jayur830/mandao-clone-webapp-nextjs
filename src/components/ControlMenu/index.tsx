@@ -5,6 +5,7 @@ import { get } from 'lodash';
 
 import { Data } from '@/types/block';
 
+import BlockControl from './BlockControl';
 import ButtonControl from './ButtonControl';
 import ImageControl from './ImageControl';
 
@@ -24,6 +25,9 @@ export interface ControlMenuProps {
 
 export default function ControlMenu({ data, onChangeData, selectedDataIndex }: ControlMenuProps) {
   // const [tab, setTab] = useState<'attribute' | 'page' | 'event' | 'material' | 'deployment'>('attribute');
+
+  const namePath = (selectedDataIndex || []).map((index, i) => (i === 0 ? index : ['children', index])).flat();
+  console.log('namePath:', namePath);
 
   return (
     <Paper
@@ -89,10 +93,51 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
             <Box padding={2}></Box>
           </>
         )} */}
-        {selectedDataIndex && selectedDataIndex.length > 0 && get(data, selectedDataIndex).type === 'image' && (
+        {namePath.length > 0 && get(data, namePath).type === 'block' && (
+          <BlockControl
+            data={get(data, namePath)}
+            onChangeData={(changedData) => {
+              console.log('[BlockControl] onChangeData');
+
+              function map(item: Data, i: number, current: number = 0): Data {
+                if (!selectedDataIndex || (selectedDataIndex && i === selectedDataIndex[current])) {
+                  if (item.type === 'block' && item.children && item.children.length > 0) {
+                    return {
+                      ...item,
+                      ...(current === (selectedDataIndex || []).length - 1 ? changedData : {}),
+                      children: item.children.map((child, j) => map(child, j, current + 1)),
+                    };
+                  }
+
+                  switch (item.type) {
+                    case 'block':
+                      return { ...item, ...changedData };
+                    default:
+                      return item;
+                  }
+                }
+
+                console.log('changed data:', changedData, selectedDataIndex, i, current);
+
+                return item;
+              }
+
+              console.log(
+                'dispatched data:',
+                data.map((item, i) => map(item, i)),
+              );
+
+              onChangeData(data.map((item, i) => map(item, i)));
+            }}
+          />
+        )}
+        {namePath.length > 0 && get(data, namePath).type === 'image' && (
           <ImageControl
-            onChangeImage={(base64) => {
-              function map(item: Data, i: number, current: number): Data {
+            data={get(data, namePath)}
+            onChangeData={(changedData) => {
+              console.log('[ImageControl] onChangeData');
+
+              function map(item: Data, i: number, current: number = 0): Data {
                 if (selectedDataIndex && i === selectedDataIndex[current]) {
                   if (item.type === 'block' && item.children) {
                     return {
@@ -105,7 +150,7 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
                     case 'image':
                       return {
                         ...item,
-                        src: base64,
+                        ...changedData,
                       };
                     default:
                       return item;
@@ -115,15 +160,17 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
                 return item;
               }
 
-              onChangeData(data.map((item, i) => map(item, i, 0)));
+              onChangeData(data.map((item, i) => map(item, i)));
             }}
           />
         )}
-        {selectedDataIndex && selectedDataIndex.length > 0 && get(data, selectedDataIndex).type === 'button' && (
+        {namePath.length > 0 && get(data, namePath).type === 'button' && (
           <ButtonControl
-            data={get(data, selectedDataIndex)}
+            data={get(data, namePath)}
             onChangeData={(changedData) => {
-              function map(item: Data, i: number, current: number): Data {
+              console.log('[ButtonControl] onChangeData');
+
+              function map(item: Data, i: number, current: number = 0): Data {
                 if (selectedDataIndex && i === selectedDataIndex[current]) {
                   if (item.type === 'block' && item.children) {
                     return {
@@ -146,7 +193,7 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
                 return item;
               }
 
-              onChangeData(data.map((item, i) => map(item, i, 0)));
+              onChangeData(data.map((item, i) => map(item, i)));
             }}
           />
         )}

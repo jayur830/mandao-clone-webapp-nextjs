@@ -18,7 +18,7 @@ export default function ButtonControl({ data, onChangeData }: ButtonControlProps
           variant="h6"
           fontWeight={700}
         >
-          버튼 속성
+          버튼 텍스트 속성
         </Typography>
         <TextField
           variant="standard"

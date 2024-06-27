@@ -9,16 +9,28 @@ import VideoBlock from './VideoBlock';
 export interface BlockProps {
   onClick(dataIndex: number[]): void;
   onSelect(dataIndex: number[]): void;
+  selectedComponent?: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined;
   dataIndex: number[];
   childrenItems: Data[];
+  style?: Extract<Data, { type: 'block' }>['style'];
 }
 
-export default function Block({ onClick, onSelect, dataIndex, childrenItems }: BlockProps) {
+export default function Block({ onClick, onSelect, selectedComponent, dataIndex, childrenItems, style }: BlockProps) {
+  console.log(selectedComponent);
+
   return (
     <Grid
+      container
+      direction={style?.flexDirection ?? 'column'}
+      justifyContent={style?.justifyContent ?? 'center'}
+      alignItems={style?.alignItems ?? 'center'}
       onClick={(e) => {
         e.stopPropagation();
-        onClick(dataIndex);
+        if (selectedComponent) {
+          onClick(dataIndex);
+        } else {
+          onSelect(dataIndex);
+        }
       }}
     >
       {childrenItems.map((item, i) => {
@@ -30,8 +42,10 @@ export default function Block({ onClick, onSelect, dataIndex, childrenItems }: B
                   key={i}
                   onClick={onClick}
                   onSelect={onSelect}
+                  selectedComponent={selectedComponent}
                   dataIndex={[...dataIndex, i]}
                   childrenItems={item.children}
+                  style={item.style}
                 />
               );
             }
@@ -40,12 +54,17 @@ export default function Block({ onClick, onSelect, dataIndex, childrenItems }: B
               <Grid
                 key={i}
                 container
-                justifyContent="center"
-                alignItems="center"
+                direction={item.style?.flexDirection ?? 'column'}
+                justifyContent={item.style?.justifyContent ?? 'center'}
+                alignItems={item.style?.alignItems ?? 'center'}
                 height={200}
                 onClick={(e) => {
                   e.stopPropagation();
-                  onClick([...dataIndex, i]);
+                  if (selectedComponent) {
+                    onClick([...dataIndex, i]);
+                  } else {
+                    onSelect([...dataIndex, i]);
+                  }
                 }}
                 sx={{
                   cursor: 'pointer',
@@ -95,7 +114,7 @@ export default function Block({ onClick, onSelect, dataIndex, childrenItems }: B
               <Button
                 key={i}
                 variant="contained"
-                fullWidth
+                // fullWidth
                 onClick={(e) => {
                   e.stopPropagation();
                   onSelect([...dataIndex, i]);

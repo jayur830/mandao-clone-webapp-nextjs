@@ -15,6 +15,8 @@ export default function Page() {
   const [data, setData] = useState<Data[]>([]);
   const [selectedDataIndex, setSelectedDataIndex] = useState<number[]>();
 
+  console.log('data:', data);
+
   return (
     <>
       <AppBar

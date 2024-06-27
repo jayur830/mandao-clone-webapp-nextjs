@@ -32,10 +32,21 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
           transition: 'all 0.3s ease',
         }}
         onClick={(e) => {
+          console.log('onClick Paper');
           e.stopPropagation();
           switch (selectedComponent) {
             case 'block':
-              onChangeData([...data, { type: 'block' }]);
+              onChangeData([
+                ...data,
+                {
+                  type: 'block',
+                  style: {
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  },
+                },
+              ]);
               break;
             case 'image':
               onChangeData([...data, { type: 'image' }]);
@@ -52,9 +63,10 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
           }
         }}
       >
-        {/* 블록을 재귀해야됨. 근데 재귀적으로 state 업데이트하는 방법을 모르겠음. dispatch callback을 재귀해야하나 */}
         <Block
+          selectedComponent={selectedComponent}
           onClick={(dataIndex) => {
+            console.log('onClick Root Block');
             function recursive(state: Data[], index: number): Data[] {
               if (index < dataIndex.length) {
                 return state.map((item, i) => {
@@ -76,7 +88,17 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
 
               switch (selectedComponent) {
                 case 'block':
-                  return [...state, { type: 'block' }];
+                  return [
+                    ...state,
+                    {
+                      type: 'block',
+                      style: {
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      },
+                    },
+                  ];
                 case 'image':
                   return [...state, { type: 'image' }];
                 case 'video':
@@ -92,13 +114,6 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
             onChangeData(recursive(data, 0));
           }}
           onSelect={(dataIndex) => {
-            // const [dataItem] = dataIndex.reduce((state, index) => {
-            //   const item = state[index];
-            //   if (item.type === 'block') {
-            //     return item.children || [];
-            //   }
-            //   return [item];
-            // }, data);
             onChangeSelectedDataIndex(dataIndex);
           }}
           dataIndex={[]}

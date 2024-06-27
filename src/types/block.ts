@@ -1,6 +1,11 @@
 export type Data =
   | {
       type: 'block';
+      style?: Partial<{
+        flexDirection: 'row' | 'column' | 'row-reverse' | 'column-reverse';
+        justifyContent: 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly';
+        alignItems: 'flex-start' | 'center' | 'flex-end' | 'stretch' | 'baseline';
+      }>;
       children?: Data[];
     }
   | {
