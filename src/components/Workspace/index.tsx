@@ -58,7 +58,17 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
               onChangeData([...data, { type: 'carousel', items: [] }]);
               break;
             case 'button':
-              onChangeData([...data, { type: 'button', text: '텍스트' }]);
+              onChangeData([
+                ...data,
+                {
+                  type: 'button',
+                  text: '텍스트',
+                  fullWidth: true,
+                  style: {
+                    borderRadius: 4,
+                  },
+                },
+              ]);
               break;
           }
         }}
@@ -106,7 +116,17 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
                 case 'carousel':
                   return [...state, { type: 'carousel', items: [] }];
                 case 'button':
-                  return [...state, { type: 'button', text: '텍스트' }];
+                  return [
+                    ...state,
+                    {
+                      type: 'button',
+                      text: '텍스트',
+                      fullWidth: true,
+                      style: {
+                        borderRadius: 4,
+                      },
+                    },
+                  ];
                 default:
                   return state;
               }

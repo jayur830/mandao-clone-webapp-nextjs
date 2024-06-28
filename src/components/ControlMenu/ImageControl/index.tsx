@@ -26,6 +26,14 @@ export default function ImageControl({ data, onChangeData }: ImageControlProps) 
 
   return (
     <>
+      <Grid padding={2}>
+        <Typography
+          variant="h5"
+          fontWeight={700}
+        >
+          이미지
+        </Typography>
+      </Grid>
       <Stack
         gap={2}
         padding={2}

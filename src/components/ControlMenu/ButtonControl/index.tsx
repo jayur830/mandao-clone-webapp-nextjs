@@ -1,4 +1,5 @@
-import { Divider, Grid, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Checkbox, Divider, FormControl, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Select, Stack, TextField, Typography } from '@mui/material';
+import { useState } from 'react';
 
 import { Data } from '@/types/block';
 
@@ -8,8 +9,18 @@ export interface ButtonControlProps {
 }
 
 export default function ButtonControl({ data, onChangeData }: ButtonControlProps) {
+  const [paddingEditType, setPaddingEditType] = useState<'none' | 'direction' | 'anchor'>('none');
+
   return (
     <>
+      <Grid padding={2}>
+        <Typography
+          variant="h5"
+          fontWeight={700}
+        >
+          버튼
+        </Typography>
+      </Grid>
       <Stack
         gap={2}
         padding={2}
@@ -18,7 +29,7 @@ export default function ButtonControl({ data, onChangeData }: ButtonControlProps
           variant="h6"
           fontWeight={700}
         >
-          버튼 텍스트 속성
+          텍스트 속성
         </Typography>
         <TextField
           variant="standard"
@@ -78,6 +89,128 @@ export default function ButtonControl({ data, onChangeData }: ButtonControlProps
         </Grid>
       </Stack>
       <Divider />
+      <Stack
+        alignItems="flex-start"
+        gap={2}
+        padding={2}
+      >
+        <Typography
+          variant="h6"
+          fontWeight={700}
+        >
+          크기 속성
+        </Typography>
+        <FormControlLabel
+          control={<Checkbox />}
+          label="가로 꽉 채움"
+          onChange={(_, fullWidth) => {
+            onChangeData({ ...data, fullWidth });
+          }}
+        />
+      </Stack>
+      <Divider />
+      <Stack
+        alignItems="flex-start"
+        gap={2}
+        padding={2}
+      >
+        <Typography
+          variant="h6"
+          fontWeight={700}
+        >
+          테두리 속성
+        </Typography>
+        <TextField
+          type="number"
+          label="모서리 둥글게"
+          fullWidth
+          value={data.style?.borderRadius == null ? '' : data.style.borderRadius}
+          onChange={(e) => {
+            onChangeData({
+              ...data,
+              style: {
+                ...data.style,
+                borderRadius: !!e.target.value ? +e.target.value : null,
+              },
+            });
+          }}
+          InputProps={{
+            endAdornment: 'px',
+          }}
+        />
+        {paddingEditType === 'none' ? (
+          <TextField
+            type="number"
+            label="여백"
+            fullWidth
+          />
+        ) : paddingEditType === 'direction' ? (
+          <Grid
+            container
+            gap={2}
+          >
+            <TextField
+              type="number"
+              label="가로"
+              sx={{ flex: 1 }}
+            />
+            <TextField
+              type="number"
+              label="세로"
+              sx={{ flex: 1 }}
+            />
+          </Grid>
+        ) : (
+          <Grid
+            container
+            gap={2}
+          >
+            <TextField
+              type="number"
+              label="상단"
+              sx={{ flex: 1 }}
+            />
+            <TextField
+              type="number"
+              label="하단"
+              sx={{ flex: 1 }}
+            />
+            <TextField
+              type="number"
+              label="좌측"
+              sx={{ flex: 1 }}
+            />
+            <TextField
+              type="number"
+              label="우측"
+              sx={{ flex: 1 }}
+            />
+          </Grid>
+        )}
+        <RadioGroup
+          row
+          defaultValue="none"
+          onChange={(e) => {
+            setPaddingEditType(e.target.value as typeof paddingEditType);
+          }}
+        >
+          <FormControlLabel
+            value="none"
+            control={<Radio />}
+            label="없음"
+          />
+          <FormControlLabel
+            value="direction"
+            control={<Radio />}
+            label="가로/세로 상세"
+          />
+          <FormControlLabel
+            value="anchor"
+            control={<Radio />}
+            label="상하좌우 상세"
+          />
+        </RadioGroup>
+      </Stack>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { Grid, MenuItem, Select, Stack, Typography } from '@mui/material';
+import { Grid, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 
 import { Data } from '@/types/block';
 
@@ -12,6 +12,14 @@ export default function BlockControl({ data, onChangeData }: BlockControlProps) 
 
   return (
     <>
+      <Grid padding={2}>
+        <Typography
+          variant="h5"
+          fontWeight={700}
+        >
+          블록
+        </Typography>
+      </Grid>
       <Stack
         gap={2}
         padding={2}
@@ -22,25 +30,55 @@ export default function BlockControl({ data, onChangeData }: BlockControlProps) 
         >
           FlexBox 스타일
         </Typography>
-        <Grid>
-          <Typography
-            fontWeight={700}
-            marginBottom={1}
-          >
-            flex-direction
-          </Typography>
-          <Select
-            fullWidth
-            value={data.style?.flexDirection || 'column'}
-            onChange={(e) => {
-              onChangeData({ ...data, style: { ...data.style, flexDirection: e.target.value as NonNullable<Extract<Data, { type: 'block' }>['style']>['flexDirection'] } });
-            }}
-          >
-            <MenuItem value="row">가로</MenuItem>
-            <MenuItem value="column">세로</MenuItem>
-            <MenuItem value="row-reverse">가로 역순</MenuItem>
-            <MenuItem value="column-reverse">세로 역순</MenuItem>
-          </Select>
+        <Grid
+          container
+          gap={2}
+        >
+          <Grid flex={1}>
+            <Typography
+              fontWeight={700}
+              marginBottom={1}
+            >
+              flex-direction
+            </Typography>
+            <Select
+              fullWidth
+              value={data.style?.flexDirection || 'column'}
+              onChange={(e) => {
+                onChangeData({ ...data, style: { ...data.style, flexDirection: e.target.value as NonNullable<Extract<Data, { type: 'block' }>['style']>['flexDirection'] } });
+              }}
+            >
+              <MenuItem value="row">가로</MenuItem>
+              <MenuItem value="column">세로</MenuItem>
+              <MenuItem value="row-reverse">가로 역순</MenuItem>
+              <MenuItem value="column-reverse">세로 역순</MenuItem>
+            </Select>
+          </Grid>
+          <Grid flex={1}>
+            <Typography
+              fontWeight={700}
+              marginBottom={1}
+            >
+              gap
+            </Typography>
+            <TextField
+              type="number"
+              placeholder="6"
+              InputProps={{
+                endAdornment: 'px',
+              }}
+              value={data.style?.gap == null ? undefined : data.style.gap}
+              onChange={(e) => {
+                onChangeData({
+                  ...data,
+                  style: {
+                    ...data.style,
+                    gap: !!e.target.value ? +e.target.value : null,
+                  },
+                });
+              }}
+            />
+          </Grid>
         </Grid>
         <Grid
           container

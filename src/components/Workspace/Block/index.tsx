@@ -24,6 +24,9 @@ export default function Block({ onClick, onSelect, selectedComponent, dataIndex,
       direction={style?.flexDirection ?? 'column'}
       justifyContent={style?.justifyContent ?? 'center'}
       alignItems={style?.alignItems ?? 'center'}
+      rowGap={(style?.flexDirection === 'column' || style?.flexDirection === 'column-reverse') && style?.gap != null ? `${style.gap}px` : 0}
+      columnGap={(style?.flexDirection === 'row' || style?.flexDirection === 'row-reverse') && style?.gap != null ? `${style.gap}px` : 0}
+      // gap={style?.gap != null ? `${style.gap}px` : 0}
       onClick={(e) => {
         e.stopPropagation();
         if (selectedComponent) {
@@ -114,12 +117,16 @@ export default function Block({ onClick, onSelect, selectedComponent, dataIndex,
               <Button
                 key={i}
                 variant="contained"
-                // fullWidth
+                fullWidth={item.fullWidth}
                 onClick={(e) => {
                   e.stopPropagation();
                   onSelect([...dataIndex, i]);
                 }}
-                sx={item.style}
+                sx={{
+                  ...item.style,
+                  lineHeight: 'normal',
+                  borderRadius: item.style?.borderRadius != null ? `${item.style.borderRadius}px` : 0,
+                }}
               >
                 {item.text}
               </Button>
