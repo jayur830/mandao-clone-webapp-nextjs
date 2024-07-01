@@ -26,7 +26,6 @@ export default function Block({ onClick, onSelect, selectedComponent, dataIndex,
       alignItems={style?.alignItems ?? 'center'}
       rowGap={(style?.flexDirection === 'column' || style?.flexDirection === 'column-reverse') && style?.gap != null ? `${style.gap}px` : 0}
       columnGap={(style?.flexDirection === 'row' || style?.flexDirection === 'row-reverse') && style?.gap != null ? `${style.gap}px` : 0}
-      // gap={style?.gap != null ? `${style.gap}px` : 0}
       onClick={(e) => {
         e.stopPropagation();
         if (selectedComponent) {

@@ -1,4 +1,5 @@
 import { Paper } from '@mui/material';
+import { useRef } from 'react';
 
 import { Data } from '@/types/block';
 
@@ -19,17 +20,25 @@ const widthMap = {
 };
 
 export default function Workspace({ data, onChangeData, breakpoint, selectedComponent, onChangeSelectedDataIndex }: WorkspaceProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  console.log(new DOMParser().parseFromString(ref.current?.innerHTML || '', 'text/html'));
+
   return (
-    <>
+    <div
+      ref={ref}
+      style={{
+        width: '100%',
+        maxWidth: widthMap[breakpoint],
+        transition: 'all 0.3s ease',
+      }}
+    >
       <Paper
         elevation={15}
         sx={{
           position: 'relative',
-          width: '100%',
-          maxWidth: widthMap[breakpoint],
           height: 'fit-content',
           minHeight: 500,
-          transition: 'all 0.3s ease',
         }}
         onClick={(e) => {
           console.log('onClick Paper');
@@ -140,6 +149,6 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
           childrenItems={data}
         />
       </Paper>
-    </>
+    </div>
   );
 }
