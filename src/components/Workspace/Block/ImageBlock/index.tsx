@@ -9,13 +9,14 @@ export interface ImageBlockProps extends Omit<Extract<Data, { type: 'image' }>, 
   onSelect(dataIndex: number[]): void;
 }
 
-export default function ImageBlock({ dataIndex, onSelect, src }: ImageBlockProps) {
+export default function ImageBlock({ dataIndex, onSelect, src, fullWidth, style }: ImageBlockProps) {
   return (
     <Grid
-      container
-      direction="column"
+      display="flex"
+      flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      width={fullWidth ? '100%' : style?.width ?? 'auto'}
       minHeight={200}
       onClick={(e) => {
         e.stopPropagation();
@@ -35,7 +36,7 @@ export default function ImageBlock({ dataIndex, onSelect, src }: ImageBlockProps
           alt="image"
           width={720}
           height={480}
-          style={{ width: '100%', height: 'auto' }}
+          style={style ?? { width: '100%', height: 'auto' }}
         />
       ) : (
         <>

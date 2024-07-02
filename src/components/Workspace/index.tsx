@@ -58,10 +58,10 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
               ]);
               break;
             case 'image':
-              onChangeData([...data, { type: 'image' }]);
+              onChangeData([...data, { type: 'image', fullWidth: true }]);
               break;
             case 'video':
-              onChangeData([...data, { type: 'video' }]);
+              onChangeData([...data, { type: 'video', fullWidth: true }]);
               break;
             case 'carousel':
               onChangeData([...data, { type: 'carousel', items: [] }]);
@@ -119,9 +119,9 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
                     },
                   ];
                 case 'image':
-                  return [...state, { type: 'image' }];
+                  return [...state, { type: 'image', fullWidth: true }];
                 case 'video':
-                  return [...state, { type: 'video' }];
+                  return [...state, { type: 'video', fullWidth: true }];
                 case 'carousel':
                   return [...state, { type: 'carousel', items: [] }];
                 case 'button':

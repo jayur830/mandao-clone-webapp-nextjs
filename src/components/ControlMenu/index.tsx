@@ -8,6 +8,7 @@ import { Data } from '@/types/block';
 import BlockControl from './BlockControl';
 import ButtonControl from './ButtonControl';
 import ImageControl from './ImageControl';
+import VideoControl from './VideoControl';
 
 // const tabs = [
 //   { value: 'attribute', label: '속성' },
@@ -97,8 +98,6 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
           <BlockControl
             data={get(data, namePath)}
             onChangeData={(changedData) => {
-              console.log('[BlockControl] onChangeData');
-
               function map(item: Data, i: number, current: number = 0): Data {
                 if (!selectedDataIndex || (selectedDataIndex && i === selectedDataIndex[current])) {
                   if (item.type === 'block' && item.children && item.children.length > 0) {
@@ -135,8 +134,6 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
           <ImageControl
             data={get(data, namePath)}
             onChangeData={(changedData) => {
-              console.log('[ImageControl] onChangeData');
-
               function map(item: Data, i: number, current: number = 0): Data {
                 if (selectedDataIndex && i === selectedDataIndex[current]) {
                   if (item.type === 'block' && item.children) {
@@ -164,12 +161,41 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
             }}
           />
         )}
+        {namePath.length > 0 && get(data, namePath).type === 'video' && (
+          <VideoControl
+            data={get(data, namePath)}
+            onChangeData={(changedData) => {
+              function map(item: Data, i: number, current: number = 0): Data {
+                if (selectedDataIndex && i === selectedDataIndex[current]) {
+                  if (item.type === 'block' && item.children) {
+                    return {
+                      ...item,
+                      children: item.children.map((child, j) => map(child, j, current + 1)),
+                    };
+                  }
+
+                  switch (item.type) {
+                    case 'video':
+                      return {
+                        ...item,
+                        ...changedData,
+                      };
+                    default:
+                      return item;
+                  }
+                }
+
+                return item;
+              }
+
+              onChangeData(data.map((item, i) => map(item, i)));
+            }}
+          />
+        )}
         {namePath.length > 0 && get(data, namePath).type === 'button' && (
           <ButtonControl
             data={get(data, namePath)}
             onChangeData={(changedData) => {
-              console.log('[ButtonControl] onChangeData');
-
               function map(item: Data, i: number, current: number = 0): Data {
                 if (selectedDataIndex && i === selectedDataIndex[current]) {
                   if (item.type === 'block' && item.children) {

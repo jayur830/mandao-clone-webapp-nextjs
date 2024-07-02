@@ -1,5 +1,5 @@
-import { Add, AddRounded, PlusOneSharp } from '@mui/icons-material';
-import { Button, Grid, Paper, Typography } from '@mui/material';
+import { AddRounded } from '@mui/icons-material';
+import { Button, Grid, Typography } from '@mui/material';
 
 import { Data } from '@/types/block';
 
@@ -86,7 +86,7 @@ export default function Block({ onClick, onSelect, selectedComponent, dataIndex,
                 </Typography>
               </Grid>
             );
-          case 'image':
+          case 'image': {
             const { type, ...props } = item;
             return (
               <ImageBlock
@@ -96,14 +96,18 @@ export default function Block({ onClick, onSelect, selectedComponent, dataIndex,
                 {...props}
               />
             );
-          case 'video':
+          }
+          case 'video': {
+            const { type, ...props } = item;
             return (
               <VideoBlock
                 key={i}
                 dataIndex={[...dataIndex, i]}
                 onSelect={onSelect}
+                {...props}
               />
             );
+          }
           case 'carousel':
             return (
               <CarouselBlock

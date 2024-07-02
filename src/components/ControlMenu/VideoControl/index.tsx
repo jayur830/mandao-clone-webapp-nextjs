@@ -14,12 +14,12 @@ function getBase64(file: File) {
   });
 }
 
-export interface ImageControlProps {
-  data: Omit<Extract<Data, { type: 'image' }>, 'type'>;
-  onChangeData(data: Omit<Extract<Data, { type: 'image' }>, 'type'>): void;
+export interface VideoControlProps {
+  data: Omit<Extract<Data, { type: 'video' }>, 'type'>;
+  onChangeData(data: Omit<Extract<Data, { type: 'video' }>, 'type'>): void;
 }
 
-export default function ImageControl({ data, onChangeData }: ImageControlProps) {
+export default function VideoControl({ data, onChangeData }: VideoControlProps) {
   const [uploadType, setUploadType] = useState<'file' | 'link'>('file');
   const [file, setFile] = useState<File | null | undefined>();
   const [url, setUrl] = useState<string>('');
@@ -31,7 +31,7 @@ export default function ImageControl({ data, onChangeData }: ImageControlProps) 
           variant="h5"
           fontWeight={700}
         >
-          이미지
+          비디오
         </Typography>
       </Grid>
       <Stack
@@ -47,7 +47,7 @@ export default function ImageControl({ data, onChangeData }: ImageControlProps) 
             variant="h6"
             fontWeight={700}
           >
-            이미지 소스
+            비디오 소스
           </Typography>
           <ButtonGroup>
             <Button
@@ -116,7 +116,7 @@ export default function ImageControl({ data, onChangeData }: ImageControlProps) 
                       fontSize="large"
                       sx={{ color: 'grey.500' }}
                     />
-                    <Typography color="grey.500">이미지를 올리세요.</Typography>
+                    <Typography color="grey.500">비디오를 올리세요.</Typography>
                   </>
                 )}
               </Box>
@@ -128,7 +128,7 @@ export default function ImageControl({ data, onChangeData }: ImageControlProps) 
             <TextField
               fullWidth
               size="small"
-              placeholder="https://example.com/image.jpg"
+              placeholder="https://example.com/image.mp4"
               value={url}
               onChange={(e) => {
                 setUrl(e.target.value);

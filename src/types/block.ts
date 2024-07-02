@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react';
+
 export type Data =
   | {
       type: 'block';
@@ -12,10 +14,14 @@ export type Data =
   | {
       type: 'image';
       src?: string;
+      fullWidth?: boolean;
+      style?: Partial<CSSProperties>;
     }
   | {
       type: 'video';
-      url?: string;
+      src?: string;
+      fullWidth?: boolean;
+      style?: Partial<CSSProperties>;
     }
   | {
       type: 'carousel';
