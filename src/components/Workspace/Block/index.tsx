@@ -1,4 +1,5 @@
-import { Button, Grid, Typography } from '@mui/material';
+import { Add, AddRounded, PlusOneSharp } from '@mui/icons-material';
+import { Button, Grid, Paper, Typography } from '@mui/material';
 
 import { Data } from '@/types/block';
 
@@ -134,6 +135,26 @@ export default function Block({ onClick, onSelect, selectedComponent, dataIndex,
             return null;
         }
       })}
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        height={100}
+        padding={2}
+        sx={{
+          cursor: 'pointer',
+          transition: 'all 0.3s ease',
+          ':hover': {
+            backgroundColor: 'grey.100',
+          },
+        }}
+      >
+        <AddRounded
+          fontSize="large"
+          color="disabled"
+          sx={{ width: 40, height: 'auto' }}
+        />
+      </Grid>
     </Grid>
   );
 }

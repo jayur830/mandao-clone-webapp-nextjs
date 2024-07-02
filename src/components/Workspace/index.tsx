@@ -38,7 +38,7 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
         sx={{
           position: 'relative',
           height: 'fit-content',
-          minHeight: 500,
+          // minHeight: 500,
         }}
         onClick={(e) => {
           console.log('onClick Paper');
