@@ -10,13 +10,14 @@ import VideoBlock from './VideoBlock';
 export interface BlockProps {
   onClick(dataIndex: number[]): void;
   onSelect(dataIndex: number[]): void;
+  onDelete(dataIndex: number[]): void;
   selectedComponent?: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined;
   dataIndex: number[];
   childrenItems: Data[];
   style?: Extract<Data, { type: 'block' }>['style'];
 }
 
-export default function Block({ onClick, onSelect, selectedComponent, dataIndex, childrenItems, style }: BlockProps) {
+export default function Block({ onClick, onSelect, onDelete, selectedComponent, dataIndex, childrenItems, style }: BlockProps) {
   console.log(selectedComponent);
 
   return (
@@ -35,6 +36,23 @@ export default function Block({ onClick, onSelect, selectedComponent, dataIndex,
           onSelect(dataIndex);
         }
       }}
+      sx={{
+        '.block': {
+          position: 'relative',
+          ':hover .delete-component-button': {
+            opacity: 1,
+          },
+        },
+        '.delete-component-button': {
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: 40,
+          height: 40,
+          opacity: 0,
+          transition: 'all 0.3s ease',
+        },
+      }}
     >
       {childrenItems.map((item, i) => {
         switch (item.type) {
@@ -45,6 +63,7 @@ export default function Block({ onClick, onSelect, selectedComponent, dataIndex,
                   key={i}
                   onClick={onClick}
                   onSelect={onSelect}
+                  onDelete={onDelete}
                   selectedComponent={selectedComponent}
                   dataIndex={[...dataIndex, i]}
                   childrenItems={item.children}
@@ -93,6 +112,7 @@ export default function Block({ onClick, onSelect, selectedComponent, dataIndex,
                 key={i}
                 dataIndex={[...dataIndex, i]}
                 onSelect={onSelect}
+                onDelete={onDelete}
                 {...props}
               />
             );
@@ -104,6 +124,7 @@ export default function Block({ onClick, onSelect, selectedComponent, dataIndex,
                 key={i}
                 dataIndex={[...dataIndex, i]}
                 onSelect={onSelect}
+                onDelete={onDelete}
                 {...props}
               />
             );
@@ -114,12 +135,14 @@ export default function Block({ onClick, onSelect, selectedComponent, dataIndex,
                 key={i}
                 dataIndex={[...dataIndex, i]}
                 onSelect={onSelect}
+                onDelete={onDelete}
               />
             );
           case 'button':
             return (
               <Button
                 key={i}
+                className="block button"
                 variant="contained"
                 fullWidth={item.fullWidth}
                 onClick={(e) => {

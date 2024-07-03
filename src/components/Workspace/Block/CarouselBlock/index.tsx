@@ -1,13 +1,16 @@
-import { Grid, Typography } from '@mui/material';
+import { Cancel } from '@mui/icons-material';
+import { Grid, IconButton, Typography } from '@mui/material';
 
 export interface CarouselBlockProps {
   dataIndex: number[];
   onSelect(dataIndex: number[]): void;
+  onDelete(dataIndex: number[]): void;
 }
 
-export default function CarouselBlock({ dataIndex, onSelect }: CarouselBlockProps) {
+export default function CarouselBlock({ dataIndex, onSelect, onDelete }: CarouselBlockProps) {
   return (
     <Grid
+      className="block carousel"
       container
       justifyContent="center"
       alignItems="center"
@@ -25,6 +28,15 @@ export default function CarouselBlock({ dataIndex, onSelect }: CarouselBlockProp
       }}
     >
       <Typography>Carousel</Typography>
+      <IconButton
+        className="delete-component-button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete(dataIndex);
+        }}
+      >
+        <Cancel />
+      </IconButton>
     </Grid>
   );
 }

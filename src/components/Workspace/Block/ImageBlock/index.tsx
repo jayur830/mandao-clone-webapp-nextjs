@@ -1,5 +1,5 @@
-import { PanoramaOutlined } from '@mui/icons-material';
-import { Grid, Typography } from '@mui/material';
+import { Cancel, PanoramaOutlined } from '@mui/icons-material';
+import { Grid, IconButton, Typography } from '@mui/material';
 import Image from 'next/image';
 
 import { Data } from '@/types/block';
@@ -7,11 +7,13 @@ import { Data } from '@/types/block';
 export interface ImageBlockProps extends Omit<Extract<Data, { type: 'image' }>, 'type'> {
   dataIndex: number[];
   onSelect(dataIndex: number[]): void;
+  onDelete(dataIndex: number[]): void;
 }
 
-export default function ImageBlock({ dataIndex, onSelect, src, fullWidth, style }: ImageBlockProps) {
+export default function ImageBlock({ dataIndex, onSelect, onDelete, src, fullWidth, style }: ImageBlockProps) {
   return (
     <Grid
+      className="block image"
       display="flex"
       flexDirection="column"
       justifyContent="center"
@@ -53,6 +55,15 @@ export default function ImageBlock({ dataIndex, onSelect, src, fullWidth, style 
           </Typography>
         </>
       )}
+      <IconButton
+        className="delete-component-button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete(dataIndex);
+        }}
+      >
+        <Cancel />
+      </IconButton>
     </Grid>
   );
 }

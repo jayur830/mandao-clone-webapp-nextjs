@@ -145,6 +145,35 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
           onSelect={(dataIndex) => {
             onChangeSelectedDataIndex(dataIndex);
           }}
+          onDelete={(dataIndex) => {
+            if (dataIndex.length === 1) {
+              return onChangeData(data.filter((_, i) => i !== dataIndex[0]));
+            }
+
+            function map(item: Data, i: number, current: number = 0): Data {
+              if (i === dataIndex[current]) {
+                if (item.type === 'block' && item.children) {
+                  if (current === dataIndex.length - 2) {
+                    return {
+                      ...item,
+                      children: item.children.filter((_, j) => j !== dataIndex[current + 1]),
+                    };
+                  }
+
+                  return {
+                    ...item,
+                    children: item.children.map((child, j) => map(child, j, current + 1)),
+                  };
+                }
+
+                return item;
+              }
+
+              return item;
+            }
+
+            onChangeData(data.map((item, i) => map(item, i)));
+          }}
           dataIndex={[]}
           childrenItems={data}
         />
