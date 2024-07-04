@@ -1,7 +1,8 @@
 'use client';
 
-import { Paper, Stack } from '@mui/material';
+import { Button, Grid, Paper, Stack } from '@mui/material';
 import { get } from 'lodash';
+import Link from 'next/link';
 
 import { Data } from '@/types/block';
 
@@ -34,7 +35,11 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
     <Paper
       square
       elevation={15}
-      sx={{ width: 400, height: '100%' }}
+      sx={{
+        position: 'relative',
+        width: 400,
+        height: '100%',
+      }}
     >
       <Stack direction="column">
         {/* <Box padding={2}>
@@ -224,6 +229,41 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
           />
         )}
       </Stack>
+      <Grid
+        position="absolute"
+        bottom={0}
+        container
+        gap={2}
+        padding={2}
+      >
+        <Button
+          variant="contained"
+          size="large"
+          sx={{
+            flex: 1,
+            fontSize: 16,
+            fontWeight: 700,
+            height: 52,
+          }}
+        >
+          배포하기
+        </Button>
+        <Button
+          LinkComponent={Link}
+          href={`/preview/${Buffer.from(JSON.stringify(data), 'utf8').toString('base64')}`}
+          target="_blank"
+          variant="outlined"
+          size="large"
+          sx={{
+            flex: 1,
+            fontSize: 16,
+            fontWeight: 700,
+            height: 52,
+          }}
+        >
+          미리보기
+        </Button>
+      </Grid>
     </Paper>
   );
 }
