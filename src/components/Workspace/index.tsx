@@ -10,6 +10,7 @@ export interface WorkspaceProps {
   onChangeData(data: Data[]): void;
   breakpoint: 'desktop' | 'tablet' | 'mobile';
   selectedComponent: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined;
+  selectedDataIndex?: number[] | null | undefined;
   onChangeSelectedDataIndex(value: number[]): void;
 }
 
@@ -19,7 +20,7 @@ const widthMap = {
   mobile: 512,
 };
 
-export default function Workspace({ data, onChangeData, breakpoint, selectedComponent, onChangeSelectedDataIndex }: WorkspaceProps) {
+export default function Workspace({ data, onChangeData, breakpoint, selectedComponent, selectedDataIndex, onChangeSelectedDataIndex }: WorkspaceProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   console.log(new DOMParser().parseFromString(ref.current?.innerHTML || '', 'text/html'));
@@ -146,6 +147,10 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
             onChangeSelectedDataIndex(dataIndex);
           }}
           onDelete={(dataIndex) => {
+            if (dataIndex.every((index, i) => index === selectedDataIndex?.[i])) {
+              onChangeSelectedDataIndex([]);
+            }
+
             if (dataIndex.length === 1) {
               return onChangeData(data.filter((_, i) => i !== dataIndex[0]));
             }

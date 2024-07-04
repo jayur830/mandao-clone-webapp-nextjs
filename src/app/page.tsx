@@ -69,6 +69,7 @@ export default function Page() {
             onChangeData={setData}
             breakpoint={breakpoint}
             selectedComponent={selectedComponent}
+            selectedDataIndex={selectedDataIndex}
             onChangeSelectedDataIndex={setSelectedDataIndex}
           />
         </Grid>
