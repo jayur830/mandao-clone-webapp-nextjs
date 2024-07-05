@@ -75,6 +75,8 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
                   text: '텍스트',
                   fullWidth: true,
                   style: {
+                    backgroundColor: '#0B74E2',
+                    color: '#FFFFFF',
                     borderRadius: 4,
                   },
                 },
@@ -133,6 +135,8 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
                       text: '텍스트',
                       fullWidth: true,
                       style: {
+                        backgroundColor: '#0B74E2',
+                        color: '#FFFFFF',
                         borderRadius: 4,
                       },
                     },

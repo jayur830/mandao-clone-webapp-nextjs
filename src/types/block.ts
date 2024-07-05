@@ -34,6 +34,8 @@ export type Data =
       style?: Partial<{
         fontSize: number;
         fontWeight: 100 | 300 | 400 | 500 | 600 | 700;
+        color: string;
+        backgroundColor: string;
         borderRadius: number | null;
         paddingTop: number;
         paddingRight: number;

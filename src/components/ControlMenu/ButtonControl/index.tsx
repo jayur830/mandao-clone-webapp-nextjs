@@ -1,6 +1,8 @@
-import { Checkbox, Divider, FormControl, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Select, Stack, TextField, Typography } from '@mui/material';
+import { Checkbox, Divider, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Select, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
+import { ColorService, useColor } from 'react-color-palette';
 
+import ColorPicker from '@/components/ColorPicker';
 import { Data } from '@/types/block';
 
 export interface ButtonControlProps {
@@ -10,6 +12,9 @@ export interface ButtonControlProps {
 
 export default function ButtonControl({ data, onChangeData }: ButtonControlProps) {
   const [paddingEditType, setPaddingEditType] = useState<'none' | 'direction' | 'anchor'>('none');
+
+  const [backgroundColor, setBackgroundColor] = useColor(data.style?.backgroundColor || '#FFFFFF');
+  const [color, setColor] = useColor(data.style?.color || '#FFFFFF');
 
   return (
     <>
@@ -103,6 +108,7 @@ export default function ButtonControl({ data, onChangeData }: ButtonControlProps
         <FormControlLabel
           control={<Checkbox />}
           label="가로 꽉 채움"
+          checked={data.fullWidth}
           onChange={(_, fullWidth) => {
             onChangeData({ ...data, fullWidth });
           }}
@@ -210,6 +216,54 @@ export default function ButtonControl({ data, onChangeData }: ButtonControlProps
             label="상하좌우 상세"
           />
         </RadioGroup>
+      </Stack>
+      <Divider />
+      <Stack
+        alignItems="flex-start"
+        gap={2}
+        padding={2}
+      >
+        <Typography
+          variant="h6"
+          fontWeight={700}
+        >
+          색상
+        </Typography>
+        <Grid
+          container
+          gap={2}
+        >
+          <ColorPicker
+            flex={1}
+            label="배경"
+            // colorValue={{
+            //   hex: data.style?.backgroundColor || '#FFFFFF',
+            //   rgb: ColorService.toRgb(data.style?.backgroundColor || '#FFFFFF'),
+            //   hsv: ColorService.toHsv(data.style?.backgroundColor || '#FFFFFF'),
+            // }}
+            colorValue={backgroundColor}
+            onChangeColor={(color) => {
+              console.log('backgroundColor:', color);
+              setBackgroundColor(color);
+              onChangeData({ ...data, style: { ...data.style, backgroundColor: color.hex } });
+            }}
+          />
+          <ColorPicker
+            flex={1}
+            label="텍스트"
+            // colorValue={{
+            //   hex: data.style?.color || '#FFFFFF',
+            //   rgb: ColorService.toRgb(data.style?.color || '#FFFFFF'),
+            //   hsv: ColorService.toHsv(data.style?.color || '#FFFFFF'),
+            // }}
+            colorValue={color}
+            onChangeColor={(color) => {
+              console.log('color:', color);
+              setColor(color);
+              onChangeData({ ...data, style: { ...data.style, color: color.hex } });
+            }}
+          />
+        </Grid>
       </Stack>
     </>
   );
