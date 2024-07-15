@@ -1,4 +1,5 @@
-import { Grid, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { InsertLinkRounded, InsertLinkTwoTone } from '@mui/icons-material';
+import { Divider, Grid, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 
 import { Data } from '@/types/block';
 
@@ -127,6 +128,112 @@ export default function BlockControl({ data, onChangeData }: BlockControlProps) 
               <MenuItem value="baseline">기준선</MenuItem>
             </Select>
           </Grid>
+        </Grid>
+      </Stack>
+      <Divider />
+      <Stack
+        gap={2}
+        padding={2}
+      >
+        <Typography
+          variant="h6"
+          fontWeight={700}
+        >
+          안쪽 여백
+        </Typography>
+        <Grid
+          container
+          alignItems="center"
+          gap={2}
+        >
+          <TextField
+            type="number"
+            label="top"
+            placeholder="12"
+            InputProps={{
+              endAdornment: 'px',
+            }}
+            value={data.style?.paddingTop == null ? undefined : `${data.style.paddingTop}`}
+            onChange={(e) => {
+              onChangeData({
+                ...data,
+                style: {
+                  ...data.style,
+                  paddingTop: !!e.target.value ? +e.target.value : null,
+                },
+              });
+            }}
+            sx={{ flex: 1 }}
+          />
+          <TextField
+            type="number"
+            label="bottom"
+            placeholder="12"
+            InputProps={{
+              endAdornment: 'px',
+            }}
+            value={data.style?.paddingBottom == null ? undefined : `${data.style.paddingBottom}`}
+            onChange={(e) => {
+              onChangeData({
+                ...data,
+                style: {
+                  ...data.style,
+                  paddingBottom: !!e.target.value ? +e.target.value : null,
+                },
+              });
+            }}
+            sx={{ flex: 1 }}
+          />
+          <IconButton sx={{ height: 40 }}>
+            <InsertLinkRounded />
+          </IconButton>
+        </Grid>
+        <Grid
+          container
+          alignItems="center"
+          gap={2}
+        >
+          <TextField
+            type="number"
+            label="left"
+            placeholder="12"
+            InputProps={{
+              endAdornment: 'px',
+            }}
+            value={data.style?.paddingLeft == null ? undefined : `${data.style.paddingLeft}`}
+            onChange={(e) => {
+              onChangeData({
+                ...data,
+                style: {
+                  ...data.style,
+                  paddingLeft: !!e.target.value ? +e.target.value : null,
+                },
+              });
+            }}
+            sx={{ flex: 1 }}
+          />
+          <TextField
+            type="number"
+            label="right"
+            placeholder="12"
+            InputProps={{
+              endAdornment: 'px',
+            }}
+            value={data.style?.paddingRight == null ? undefined : `${data.style.paddingRight}`}
+            onChange={(e) => {
+              onChangeData({
+                ...data,
+                style: {
+                  ...data.style,
+                  paddingRight: !!e.target.value ? +e.target.value : null,
+                },
+              });
+            }}
+            sx={{ flex: 1 }}
+          />
+          <IconButton sx={{ height: 40 }}>
+            <InsertLinkRounded />
+          </IconButton>
         </Grid>
       </Stack>
     </>

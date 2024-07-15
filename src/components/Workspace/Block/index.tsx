@@ -28,6 +28,10 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
       alignItems={style?.alignItems ?? 'center'}
       rowGap={(style?.flexDirection === 'column' || style?.flexDirection === 'column-reverse') && style?.gap != null ? `${style.gap}px` : 0}
       columnGap={(style?.flexDirection === 'row' || style?.flexDirection === 'row-reverse') && style?.gap != null ? `${style.gap}px` : 0}
+      paddingTop={`${style?.paddingTop || 0}px`}
+      paddingRight={`${style?.paddingRight || 0}px`}
+      paddingBottom={`${style?.paddingBottom || 0}px`}
+      paddingLeft={`${style?.paddingLeft || 0}px`}
       onClick={(e) => {
         e.stopPropagation();
         if (selectedComponent) {
@@ -79,6 +83,10 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
                 direction={item.style?.flexDirection ?? 'column'}
                 justifyContent={item.style?.justifyContent ?? 'center'}
                 alignItems={item.style?.alignItems ?? 'center'}
+                paddingTop={`${item.style?.paddingTop || 0}px`}
+                paddingRight={`${item.style?.paddingRight || 0}px`}
+                paddingBottom={`${item.style?.paddingBottom || 0}px`}
+                paddingLeft={`${item.style?.paddingLeft || 0}px`}
                 height={200}
                 onClick={(e) => {
                   e.stopPropagation();

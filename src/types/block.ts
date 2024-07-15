@@ -8,6 +8,10 @@ export type Data =
         justifyContent: 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly';
         alignItems: 'flex-start' | 'center' | 'flex-end' | 'stretch' | 'baseline';
         gap: number | null;
+        paddingTop: number | null;
+        paddingRight: number | null;
+        paddingBottom: number | null;
+        paddingLeft: number | null;
       }>;
       children?: Data[];
     }

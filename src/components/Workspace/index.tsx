@@ -54,6 +54,10 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    paddingTop: 0,
+                    paddingRight: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
                   },
                 },
               ]);
@@ -118,6 +122,10 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
+                        paddingTop: 0,
+                        paddingRight: 0,
+                        paddingBottom: 0,
+                        paddingLeft: 0,
                       },
                     },
                   ];
