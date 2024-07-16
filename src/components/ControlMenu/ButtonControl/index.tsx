@@ -236,11 +236,6 @@ export default function ButtonControl({ data, onChangeData }: ButtonControlProps
           <ColorPicker
             flex={1}
             label="배경"
-            // colorValue={{
-            //   hex: data.style?.backgroundColor || '#FFFFFF',
-            //   rgb: ColorService.toRgb(data.style?.backgroundColor || '#FFFFFF'),
-            //   hsv: ColorService.toHsv(data.style?.backgroundColor || '#FFFFFF'),
-            // }}
             colorValue={backgroundColor}
             onChangeColor={(color) => {
               console.log('backgroundColor:', color);
@@ -251,11 +246,6 @@ export default function ButtonControl({ data, onChangeData }: ButtonControlProps
           <ColorPicker
             flex={1}
             label="텍스트"
-            // colorValue={{
-            //   hex: data.style?.color || '#FFFFFF',
-            //   rgb: ColorService.toRgb(data.style?.color || '#FFFFFF'),
-            //   hsv: ColorService.toHsv(data.style?.color || '#FFFFFF'),
-            // }}
             colorValue={color}
             onChangeColor={(color) => {
               console.log('color:', color);

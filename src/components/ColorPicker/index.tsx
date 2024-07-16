@@ -38,7 +38,7 @@ export default function ColorPicker({ label, colorValue, onChangeColor, ...props
           component={TextField}
           fullWidth
           label={label}
-          value={colorValue.hex}
+          value={colorValue.hex.toUpperCase()}
           InputProps={{
             disabled: true,
             startAdornment: (
@@ -47,7 +47,7 @@ export default function ColorPicker({ label, colorValue, onChangeColor, ...props
                 borderRadius={1}
                 marginRight={1}
                 sx={{
-                  backgroundColor: colorValue.hex,
+                  backgroundColor: colorValue.hex.toUpperCase(),
                   aspectRatio: '1 / 1',
                 }}
               />

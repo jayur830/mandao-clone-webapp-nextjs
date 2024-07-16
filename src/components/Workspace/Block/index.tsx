@@ -1,5 +1,7 @@
 import { AddRounded } from '@mui/icons-material';
 import { Button, Grid, Typography } from '@mui/material';
+import { useMemo } from 'react';
+import { ColorService } from 'react-color-palette';
 
 import { Data } from '@/types/block';
 
@@ -20,6 +22,15 @@ export interface BlockProps {
 export default function Block({ onClick, onSelect, onDelete, selectedComponent, dataIndex, childrenItems, style }: BlockProps) {
   console.log(selectedComponent);
 
+  const hoveredBackgroundColor = useMemo(() => {
+    if (style && style.backgroundColor) {
+      const { r, g, b } = ColorService.hex2rgb(style.backgroundColor);
+      return ColorService.rgb2hex({ r: Math.round(r * 0.8), g: Math.round(g * 0.8), b: Math.round(b * 0.8), a: 1 });
+    }
+
+    return 'transparent';
+  }, [style]);
+
   return (
     <Grid
       container
@@ -28,6 +39,7 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
       alignItems={style?.alignItems ?? 'center'}
       rowGap={(style?.flexDirection === 'column' || style?.flexDirection === 'column-reverse') && style?.gap != null ? `${style.gap}px` : 0}
       columnGap={(style?.flexDirection === 'row' || style?.flexDirection === 'row-reverse') && style?.gap != null ? `${style.gap}px` : 0}
+      bgcolor={style?.backgroundColor || 'transparent'}
       paddingTop={`${style?.paddingTop || 0}px`}
       paddingRight={`${style?.paddingRight || 0}px`}
       paddingBottom={`${style?.paddingBottom || 0}px`}
@@ -41,6 +53,9 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
         }
       }}
       sx={{
+        ':hover': {
+          backgroundColor: hoveredBackgroundColor,
+        },
         '.block': {
           position: 'relative',
           ':hover .delete-component-button': {
@@ -76,6 +91,11 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
               );
             }
 
+            const { r, g, b, a } = ColorService.hex2rgb(item.style?.backgroundColor || '#FFFFFF');
+            console.log('rgb:', r, g, b);
+            const innerHoveredBackgroundColor = ColorService.rgb2hex({ r: Math.round(r * 0.7), g: Math.round(g * 0.7), b: Math.round(b * 0.7), a });
+            console.log('innerHoveredBackgroundColor:', innerHoveredBackgroundColor);
+
             return (
               <Grid
                 key={i}
@@ -83,6 +103,7 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
                 direction={item.style?.flexDirection ?? 'column'}
                 justifyContent={item.style?.justifyContent ?? 'center'}
                 alignItems={item.style?.alignItems ?? 'center'}
+                bgcolor={item.style?.backgroundColor || 'transparent'}
                 paddingTop={`${item.style?.paddingTop || 0}px`}
                 paddingRight={`${item.style?.paddingRight || 0}px`}
                 paddingBottom={`${item.style?.paddingBottom || 0}px`}
@@ -100,7 +121,7 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   ':hover': {
-                    backgroundColor: 'grey.100',
+                    backgroundColor: innerHoveredBackgroundColor,
                   },
                 }}
               >
@@ -180,7 +201,7 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
           cursor: 'pointer',
           transition: 'all 0.3s ease',
           ':hover': {
-            backgroundColor: 'grey.100',
+            backgroundColor: hoveredBackgroundColor,
           },
         }}
       >

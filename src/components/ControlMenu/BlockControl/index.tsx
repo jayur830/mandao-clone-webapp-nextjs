@@ -1,6 +1,8 @@
-import { InsertLinkRounded, InsertLinkTwoTone } from '@mui/icons-material';
+import { InsertLinkRounded } from '@mui/icons-material';
 import { Divider, Grid, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { useColor } from 'react-color-palette';
 
+import ColorPicker from '@/components/ColorPicker';
 import { Data } from '@/types/block';
 
 export interface BlockControlProps {
@@ -10,6 +12,8 @@ export interface BlockControlProps {
 
 export default function BlockControl({ data, onChangeData }: BlockControlProps) {
   console.log('[BlockControl] data:', data);
+
+  const [backgroundColor, setBackgroundColor] = useColor(data.style?.backgroundColor || '#FFFFFF');
 
   return (
     <>
@@ -235,6 +239,28 @@ export default function BlockControl({ data, onChangeData }: BlockControlProps) 
             <InsertLinkRounded />
           </IconButton>
         </Grid>
+      </Stack>
+      <Divider />
+      <Stack
+        gap={2}
+        padding={2}
+      >
+        <Typography
+          variant="h6"
+          fontWeight={700}
+        >
+          배경 색상
+        </Typography>
+        <ColorPicker
+          flex={1}
+          label="배경"
+          colorValue={backgroundColor}
+          onChangeColor={(color) => {
+            console.log('backgroundColor:', color);
+            setBackgroundColor(color);
+            onChangeData({ ...data, style: { ...data.style, backgroundColor: color.hex } });
+          }}
+        />
       </Stack>
     </>
   );
