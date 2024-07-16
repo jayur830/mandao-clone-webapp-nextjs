@@ -159,13 +159,24 @@ export default function BlockControl({ data, onChangeData }: BlockControlProps) 
             }}
             value={data.style?.paddingTop == null ? undefined : `${data.style.paddingTop}`}
             onChange={(e) => {
-              onChangeData({
-                ...data,
-                style: {
-                  ...data.style,
-                  paddingTop: !!e.target.value ? +e.target.value : null,
-                },
-              });
+              if (data.fixPaddingVertical) {
+                onChangeData({
+                  ...data,
+                  style: {
+                    ...data.style,
+                    paddingTop: !!e.target.value ? +e.target.value : null,
+                    paddingBottom: !!e.target.value ? +e.target.value : null,
+                  },
+                });
+              } else {
+                onChangeData({
+                  ...data,
+                  style: {
+                    ...data.style,
+                    paddingTop: !!e.target.value ? +e.target.value : null,
+                  },
+                });
+              }
             }}
             sx={{ flex: 1 }}
           />
@@ -178,18 +189,34 @@ export default function BlockControl({ data, onChangeData }: BlockControlProps) 
             }}
             value={data.style?.paddingBottom == null ? undefined : `${data.style.paddingBottom}`}
             onChange={(e) => {
-              onChangeData({
-                ...data,
-                style: {
-                  ...data.style,
-                  paddingBottom: !!e.target.value ? +e.target.value : null,
-                },
-              });
+              if (data.fixPaddingVertical) {
+                onChangeData({
+                  ...data,
+                  style: {
+                    ...data.style,
+                    paddingTop: !!e.target.value ? +e.target.value : null,
+                    paddingBottom: !!e.target.value ? +e.target.value : null,
+                  },
+                });
+              } else {
+                onChangeData({
+                  ...data,
+                  style: {
+                    ...data.style,
+                    paddingBottom: !!e.target.value ? +e.target.value : null,
+                  },
+                });
+              }
             }}
             sx={{ flex: 1 }}
           />
-          <IconButton sx={{ height: 40 }}>
-            <InsertLinkRounded />
+          <IconButton
+            sx={{ height: 40 }}
+            onClick={() => {
+              onChangeData({ ...data, fixPaddingVertical: !data.fixPaddingVertical });
+            }}
+          >
+            <InsertLinkRounded sx={{ color: data.fixPaddingVertical ? 'common.black' : 'grey.400' }} />
           </IconButton>
         </Grid>
         <Grid
@@ -206,13 +233,24 @@ export default function BlockControl({ data, onChangeData }: BlockControlProps) 
             }}
             value={data.style?.paddingLeft == null ? undefined : `${data.style.paddingLeft}`}
             onChange={(e) => {
-              onChangeData({
-                ...data,
-                style: {
-                  ...data.style,
-                  paddingLeft: !!e.target.value ? +e.target.value : null,
-                },
-              });
+              if (data.fixPaddingHorizontal) {
+                onChangeData({
+                  ...data,
+                  style: {
+                    ...data.style,
+                    paddingRight: !!e.target.value ? +e.target.value : null,
+                    paddingLeft: !!e.target.value ? +e.target.value : null,
+                  },
+                });
+              } else {
+                onChangeData({
+                  ...data,
+                  style: {
+                    ...data.style,
+                    paddingLeft: !!e.target.value ? +e.target.value : null,
+                  },
+                });
+              }
             }}
             sx={{ flex: 1 }}
           />
@@ -225,18 +263,34 @@ export default function BlockControl({ data, onChangeData }: BlockControlProps) 
             }}
             value={data.style?.paddingRight == null ? undefined : `${data.style.paddingRight}`}
             onChange={(e) => {
-              onChangeData({
-                ...data,
-                style: {
-                  ...data.style,
-                  paddingRight: !!e.target.value ? +e.target.value : null,
-                },
-              });
+              if (data.fixPaddingHorizontal) {
+                onChangeData({
+                  ...data,
+                  style: {
+                    ...data.style,
+                    paddingRight: !!e.target.value ? +e.target.value : null,
+                    paddingLeft: !!e.target.value ? +e.target.value : null,
+                  },
+                });
+              } else {
+                onChangeData({
+                  ...data,
+                  style: {
+                    ...data.style,
+                    paddingRight: !!e.target.value ? +e.target.value : null,
+                  },
+                });
+              }
             }}
             sx={{ flex: 1 }}
           />
-          <IconButton sx={{ height: 40 }}>
-            <InsertLinkRounded />
+          <IconButton
+            sx={{ height: 40 }}
+            onClick={() => {
+              onChangeData({ ...data, fixPaddingHorizontal: !data.fixPaddingHorizontal });
+            }}
+          >
+            <InsertLinkRounded sx={{ color: data.fixPaddingHorizontal ? 'common.black' : 'grey.400' }} />
           </IconButton>
         </Grid>
       </Stack>

@@ -50,6 +50,8 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
                 ...data,
                 {
                   type: 'block',
+                  fixPaddingHorizontal: true,
+                  fixPaddingVertical: true,
                   style: {
                     flexDirection: 'column',
                     justifyContent: 'center',
@@ -118,6 +120,8 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
                     ...state,
                     {
                       type: 'block',
+                      fixPaddingHorizontal: true,
+                      fixPaddingVertical: true,
                       style: {
                         flexDirection: 'column',
                         justifyContent: 'center',

@@ -3,6 +3,8 @@ import { CSSProperties } from 'react';
 export type Data =
   | {
       type: 'block';
+      fixPaddingHorizontal: boolean;
+      fixPaddingVertical: boolean;
       style?: Partial<{
         flexDirection: 'row' | 'column' | 'row-reverse' | 'column-reverse';
         justifyContent: 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly';
