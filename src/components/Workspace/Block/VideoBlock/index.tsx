@@ -29,12 +29,24 @@ export default function VideoBlock({ dataIndex, onSelect, onDelete, src, fullWid
         ':hover': {
           backgroundColor: 'grey.100',
         },
+        '& video, & iframe': {
+          width: '100%',
+          aspectRatio: '16 / 9',
+          border: 'none',
+        },
       }}
     >
       {src ? (
-        <video>
-          <source src={src} />
-        </video>
+        src.startsWith('https://youtube.com/embed/') ? (
+          <iframe src={src} />
+        ) : (
+          <video
+            autoPlay={false}
+            controls
+          >
+            <source src={src} />
+          </video>
+        )
       ) : (
         <>
           <VideoCameraBackOutlined
