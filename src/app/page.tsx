@@ -11,7 +11,7 @@ import { Data } from '@/types/block';
 
 export default function Page() {
   const [breakpoint, setBreakpoint] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
-  const [selectedComponent, setSelectedComponent] = useState<'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined>();
+  const [selectedComponent, setSelectedComponent] = useState<'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined>();
   const [data, setData] = useState<Data[]>([]);
   const [selectedDataIndex, setSelectedDataIndex] = useState<number[]>();
 

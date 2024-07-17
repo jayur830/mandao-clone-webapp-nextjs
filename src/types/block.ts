@@ -49,4 +49,17 @@ export type Data =
         paddingBottom: number;
         paddingLeft: number;
       }>;
+    }
+  | {
+      type: 'text';
+      value: string;
+      style?: Partial<{
+        fontSize: number;
+        fontWeight: 100 | 300 | 400 | 500 | 600 | 700;
+        fontStyle: 'normal' | 'italic';
+        textAlign: 'left' | 'center' | 'right';
+        whiteSpace: 'normal' | 'pre-line';
+        lineHeight: number;
+        color: string;
+      }>;
     };

@@ -1,4 +1,4 @@
-import { ImageOutlined, SmartButtonOutlined, SmartDisplayOutlined, ViewAgendaOutlined, ViewCarouselOutlined } from '@mui/icons-material';
+import { ImageOutlined, SmartButtonOutlined, SmartDisplayOutlined, TextFormatOutlined, ViewAgendaOutlined, ViewCarouselOutlined } from '@mui/icons-material';
 import { IconButton, List, ListItem, Paper, Tooltip } from '@mui/material';
 
 const list = [
@@ -26,6 +26,11 @@ const list = [
     title: '버튼',
     value: 'button',
     icon: SmartButtonOutlined,
+  },
+  {
+    title: '텍스트',
+    value: 'text',
+    icon: TextFormatOutlined,
   },
 ];
 

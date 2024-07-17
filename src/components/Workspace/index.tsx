@@ -9,7 +9,7 @@ export interface WorkspaceProps {
   data: Data[];
   onChangeData(data: Data[]): void;
   breakpoint: 'desktop' | 'tablet' | 'mobile';
-  selectedComponent: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined;
+  selectedComponent: 'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined;
   selectedDataIndex?: number[] | null | undefined;
   onChangeSelectedDataIndex(value: number[]): void;
 }
@@ -88,6 +88,15 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
                 },
               ]);
               break;
+            case 'text':
+              onChangeData([
+                ...data,
+                {
+                  type: 'text',
+                  value: '텍스트',
+                },
+              ]);
+              break;
           }
         }}
       >
@@ -151,6 +160,14 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
                         color: '#FFFFFF',
                         borderRadius: 4,
                       },
+                    },
+                  ];
+                case 'text':
+                  return [
+                    ...data,
+                    {
+                      type: 'text',
+                      value: '텍스트',
                     },
                   ];
                 default:

@@ -13,7 +13,7 @@ export interface BlockProps {
   onClick(dataIndex: number[]): void;
   onSelect(dataIndex: number[]): void;
   onDelete(dataIndex: number[]): void;
-  selectedComponent?: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined;
+  selectedComponent?: 'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined;
   dataIndex: number[];
   childrenItems: Data[];
   style?: Extract<Data, { type: 'block' }>['style'];
@@ -186,6 +186,20 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
               >
                 {item.text}
               </Button>
+            );
+          case 'text':
+            return (
+              <Typography
+                fontSize={item.style?.fontSize || 16}
+                fontWeight={item.style?.fontWeight || 400}
+                fontStyle={item.style?.fontStyle}
+                textAlign={item.style?.textAlign}
+                lineHeight={item.style?.lineHeight}
+                whiteSpace={item.style?.whiteSpace}
+                color={item.style?.color}
+              >
+                {item.value}
+              </Typography>
             );
           default:
             return null;
