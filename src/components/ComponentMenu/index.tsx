@@ -35,8 +35,8 @@ const list = [
 ];
 
 export interface ComponentMenuProps {
-  selectedMenu: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined;
-  onChangeSelectedMenu(value: 'block' | 'image' | 'video' | 'carousel' | 'button' | null | undefined): void;
+  selectedMenu: 'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined;
+  onChangeSelectedMenu(value: 'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined): void;
 }
 
 export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: ComponentMenuProps) {

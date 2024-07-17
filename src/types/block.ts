@@ -60,6 +60,7 @@ export type Data =
         textAlign: 'left' | 'center' | 'right';
         whiteSpace: 'normal' | 'pre-line';
         lineHeight: number;
+        textDecoration: 'none' | 'underline' | 'line-through' | 'overline';
         color: string;
       }>;
     };

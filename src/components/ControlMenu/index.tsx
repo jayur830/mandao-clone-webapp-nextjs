@@ -9,6 +9,7 @@ import { Data } from '@/types/block';
 import BlockControl from './BlockControl';
 import ButtonControl from './ButtonControl';
 import ImageControl from './ImageControl';
+import TextControl from './TextControl';
 import VideoControl from './VideoControl';
 
 // const tabs = [
@@ -212,6 +213,37 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
 
                   switch (item.type) {
                     case 'button':
+                      return {
+                        ...item,
+                        ...changedData,
+                      };
+                    default:
+                      return item;
+                  }
+                }
+
+                return item;
+              }
+
+              onChangeData(data.map((item, i) => map(item, i)));
+            }}
+          />
+        )}
+        {namePath.length > 0 && get(data, namePath).type === 'text' && (
+          <TextControl
+            data={get(data, namePath)}
+            onChangeData={(changedData) => {
+              function map(item: Data, i: number, current: number = 0): Data {
+                if (selectedDataIndex && i === selectedDataIndex[current]) {
+                  if (item.type === 'block' && item.children) {
+                    return {
+                      ...item,
+                      children: item.children.map((child, j) => map(child, j, current + 1)),
+                    };
+                  }
+
+                  switch (item.type) {
+                    case 'text':
                       return {
                         ...item,
                         ...changedData,

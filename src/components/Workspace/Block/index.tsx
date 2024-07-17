@@ -190,6 +190,7 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
           case 'text':
             return (
               <Typography
+                key={i}
                 fontSize={item.style?.fontSize || 16}
                 fontWeight={item.style?.fontWeight || 400}
                 fontStyle={item.style?.fontStyle}
@@ -197,6 +198,13 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
                 lineHeight={item.style?.lineHeight}
                 whiteSpace={item.style?.whiteSpace}
                 color={item.style?.color}
+                sx={{
+                  textDecoration: item.style?.textDecoration,
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelect([...dataIndex, i]);
+                }}
               >
                 {item.value}
               </Typography>

@@ -164,7 +164,7 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
                   ];
                 case 'text':
                   return [
-                    ...data,
+                    ...state,
                     {
                       type: 'text',
                       value: '텍스트',

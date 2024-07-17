@@ -1,6 +1,6 @@
 import { Checkbox, Divider, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Select, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
-import { ColorService, useColor } from 'react-color-palette';
+import { useColor } from 'react-color-palette';
 
 import ColorPicker from '@/components/ColorPicker';
 import { Data } from '@/types/block';
