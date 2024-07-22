@@ -23,6 +23,7 @@ export default function ImageControl({ data, onChangeData }: ImageControlProps) 
   const [uploadType, setUploadType] = useState<'file' | 'link'>('file');
   const [file, setFile] = useState<File | null | undefined>();
   const [url, setUrl] = useState<string>('');
+  const [focusedOnDrag, setFocusedOnDrag] = useState<boolean>(false);
 
   return (
     <>
@@ -88,7 +89,30 @@ export default function ImageControl({ data, onChangeData }: ImageControlProps) 
               }}
               style={{ display: 'none' }}
             />
-            <label htmlFor="img-upload">
+            <label
+              htmlFor="img-upload"
+              onDragEnter={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setFocusedOnDrag(true);
+              }}
+              onDragLeave={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setFocusedOnDrag(false);
+              }}
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onDrop={async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setFocusedOnDrag(false);
+                setFile(e.dataTransfer.files[0]);
+                onChangeData({ ...data, src: (await getBase64(e.dataTransfer.files[0])) as unknown as string });
+              }}
+            >
               <Box
                 display="flex"
                 flexDirection="column"
@@ -101,6 +125,7 @@ export default function ImageControl({ data, onChangeData }: ImageControlProps) 
                   backgroundColor: '#EEEEEE',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
+                  filter: `brightness(${focusedOnDrag ? 1.04 : 1})`,
                   ':hover': {
                     backgroundColor: '#E7E7E7',
                   },
