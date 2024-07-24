@@ -1,6 +1,6 @@
 import { AddRounded } from '@mui/icons-material';
 import { Button, Grid, Typography } from '@mui/material';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { ColorService } from 'react-color-palette';
 
 import { Data } from '@/types/block';
@@ -10,6 +10,7 @@ import ImageBlock from './ImageBlock';
 import VideoBlock from './VideoBlock';
 
 export interface BlockProps {
+  setHovered?(value: boolean): void;
   onClick(dataIndex: number[]): void;
   onSelect(dataIndex: number[]): void;
   onDelete(dataIndex: number[]): void;
@@ -19,7 +20,9 @@ export interface BlockProps {
   style?: Extract<Data, { type: 'block' }>['style'];
 }
 
-export default function Block({ onClick, onSelect, onDelete, selectedComponent, dataIndex, childrenItems, style }: BlockProps) {
+export default function Block({ setHovered: setParentHovered, onClick, onSelect, onDelete, selectedComponent, dataIndex, childrenItems, style }: BlockProps) {
+  const [hovered, setHovered] = useState<boolean>(false);
+
   console.log(selectedComponent);
 
   const hoveredBackgroundColor = useMemo(() => {
@@ -33,6 +36,7 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
 
   return (
     <Grid
+      position="relative"
       container
       direction={style?.flexDirection ?? 'column'}
       justifyContent={style?.justifyContent ?? 'center'}
@@ -52,15 +56,31 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
           onSelect(dataIndex);
         }
       }}
+      onMouseEnter={() => {
+        setParentHovered && setParentHovered(false);
+        setHovered(true);
+      }}
+      onMouseLeave={() => {
+        setHovered(false);
+        setParentHovered && setParentHovered(true);
+      }}
       sx={{
+        transition: 'background-color 0.3s ease',
+        cursor: 'pointer',
         ':hover': {
           backgroundColor: hoveredBackgroundColor,
+          '.hovered': {
+            display: 'block',
+          },
         },
         '.block': {
           position: 'relative',
           ':hover .delete-component-button': {
             opacity: 1,
           },
+        },
+        '.hovered': {
+          display: 'none',
         },
         '.delete-component-button': {
           position: 'absolute',
@@ -73,6 +93,18 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
         },
       }}
     >
+      <Grid
+        position="absolute"
+        top={0}
+        left={0}
+        border="3px solid #009FFF"
+        width="100%"
+        height="100%"
+        sx={{
+          transition: 'opacity 0.15s ease',
+          opacity: +hovered,
+        }}
+      />
       {childrenItems.map((item, i) => {
         switch (item.type) {
           case 'block':
@@ -80,6 +112,7 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
               return (
                 <Block
                   key={i}
+                  setHovered={setHovered}
                   onClick={onClick}
                   onSelect={onSelect}
                   onDelete={onDelete}
@@ -140,6 +173,7 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
               <ImageBlock
                 key={i}
                 dataIndex={[...dataIndex, i]}
+                setHovered={setHovered}
                 onSelect={onSelect}
                 onDelete={onDelete}
                 {...props}
@@ -152,6 +186,7 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
               <VideoBlock
                 key={i}
                 dataIndex={[...dataIndex, i]}
+                setHovered={setHovered}
                 onSelect={onSelect}
                 onDelete={onDelete}
                 {...props}
@@ -163,6 +198,7 @@ export default function Block({ onClick, onSelect, onDelete, selectedComponent, 
               <CarouselBlock
                 key={i}
                 dataIndex={[...dataIndex, i]}
+                setHovered={setHovered}
                 onSelect={onSelect}
                 onDelete={onDelete}
               />
