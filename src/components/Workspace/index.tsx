@@ -1,3 +1,5 @@
+'use client';
+
 import { Paper } from '@mui/material';
 import { useRef } from 'react';
 
@@ -20,8 +22,48 @@ const widthMap = {
   mobile: 512,
 };
 
+function reorderArray<T>(list: T[], startIndex: number, endIndex: number): T[] {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+}
+
 export default function Workspace({ data, onChangeData, breakpoint, selectedComponent, selectedDataIndex, onChangeSelectedDataIndex }: WorkspaceProps) {
   const ref = useRef<HTMLDivElement>(null);
+
+  const handleReorder = (parentDataIndex: number[], fromIndex: number, toIndex: number) => {
+    if (fromIndex === toIndex || fromIndex < 0 || toIndex < 0) return;
+
+    if (parentDataIndex.length === 0) {
+      if (toIndex >= data.length) return;
+      onChangeData(reorderArray(data, fromIndex, toIndex));
+      return;
+    }
+
+    function map(item: Data, i: number, current: number = 0): Data {
+      if (i === parentDataIndex[current]) {
+        if (item.type === 'block' && item.children) {
+          if (current === parentDataIndex.length - 1) {
+            if (toIndex >= item.children.length) return item;
+            return {
+              ...item,
+              children: reorderArray(item.children, fromIndex, toIndex),
+            };
+          }
+
+          return {
+            ...item,
+            children: item.children.map((child, j) => map(child, j, current + 1)),
+          };
+        }
+        return item;
+      }
+      return item;
+    }
+
+    onChangeData(data.map((item, i) => map(item, i)));
+  };
 
   return (
     <div
@@ -37,10 +79,8 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
         sx={{
           position: 'relative',
           height: 'fit-content',
-          // minHeight: 500,
         }}
         onClick={(e) => {
-          console.log('onClick Paper');
           e.stopPropagation();
           switch (selectedComponent) {
             case 'block':
@@ -101,7 +141,6 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
         <Block
           selectedComponent={selectedComponent}
           onClick={(dataIndex) => {
-            console.log('onClick Root Block');
             function recursive(state: Data[], index: number): Data[] {
               if (index < dataIndex.length) {
                 return state.map((item, i) => {
@@ -210,6 +249,7 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
 
             onChangeData(data.map((item, i) => map(item, i)));
           }}
+          onReorder={handleReorder}
           dataIndex={[]}
           childrenItems={data}
         />
