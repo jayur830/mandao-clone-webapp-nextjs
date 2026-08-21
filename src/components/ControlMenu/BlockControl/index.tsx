@@ -1,5 +1,5 @@
-import { InsertLinkRounded } from '@mui/icons-material';
-import { Divider, Grid, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { InsertLinkRounded, PushPinOutlined } from '@mui/icons-material';
+import { Checkbox, Divider, FormControlLabel, Grid, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { useColor } from 'react-color-palette';
 
 import ColorPicker from '@/components/ColorPicker';
@@ -25,6 +25,39 @@ export default function BlockControl({ data, onChangeData }: BlockControlProps) 
           블록
         </Typography>
       </Grid>
+      <Stack
+        gap={1}
+        paddingX={2}
+        paddingBottom={1}
+      >
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={Boolean(data.isFloatingBottom)}
+              onChange={(_, checked) => onChangeData({ ...data, isFloatingBottom: checked })}
+            />
+          }
+          label={
+            <Stack
+              direction="row"
+              alignItems="center"
+              gap={0.5}
+            >
+              <PushPinOutlined
+                fontSize="small"
+                sx={{ color: '#009FFF' }}
+              />
+              <Typography
+                variant="body2"
+                fontWeight={700}
+              >
+                화면 하단 고정 바 (Sticky CTA)
+              </Typography>
+            </Stack>
+          }
+        />
+      </Stack>
+      <Divider />
       <Stack
         gap={2}
         padding={2}

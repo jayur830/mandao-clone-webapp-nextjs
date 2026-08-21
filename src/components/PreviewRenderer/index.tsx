@@ -260,6 +260,9 @@ function RenderItem({ item }: { item: Data }) {
 export default function PreviewRenderer({ data }: { data: Data[] }) {
   const [deviceMode, setDeviceMode] = useState<'mobile' | 'full'>('mobile');
 
+  const regularItems = data.filter((i) => !((i.type === 'block' || i.type === 'button') && i.isFloatingBottom));
+  const floatingItems = data.filter((i) => (i.type === 'block' || i.type === 'button') && i.isFloatingBottom);
+
   return (
     <Box
       minHeight="100vh"
@@ -294,6 +297,7 @@ export default function PreviewRenderer({ data }: { data: Data[] }) {
           maxWidth: deviceMode === 'mobile' ? 512 : 1200,
           padding: '0 !important',
           transition: 'max-width 0.3s ease',
+          position: 'relative',
         }}
       >
         <Paper
@@ -303,9 +307,10 @@ export default function PreviewRenderer({ data }: { data: Data[] }) {
             minHeight: '80vh',
             bgcolor: 'background.paper',
             borderRadius: deviceMode === 'mobile' ? 3 : 0,
+            paddingBottom: floatingItems.length > 0 ? '80px' : 0,
           }}
         >
-          {data.length === 0 ? (
+          {regularItems.length === 0 && floatingItems.length === 0 ? (
             <Box
               padding={8}
               textAlign="center"
@@ -313,7 +318,7 @@ export default function PreviewRenderer({ data }: { data: Data[] }) {
               <Typography color="text.secondary">프로모션 콘텐츠가 비어 있습니다.</Typography>
             </Box>
           ) : (
-            data.map((item, i) => (
+            regularItems.map((item, i) => (
               <RenderItem
                 key={i}
                 item={item}
@@ -321,6 +326,33 @@ export default function PreviewRenderer({ data }: { data: Data[] }) {
             ))
           )}
         </Paper>
+
+        {/* 하단 고정 플로팅 바 */}
+        {floatingItems.length > 0 && (
+          <Box
+            sx={{
+              position: 'fixed',
+              bottom: 0,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '100%',
+              maxWidth: deviceMode === 'mobile' ? 512 : 1200,
+              zIndex: 1000,
+              backgroundColor: 'rgba(255,255,255,0.95)',
+              backdropFilter: 'blur(8px)',
+              borderTop: '1px solid #E0E0E0',
+              padding: 2,
+              boxShadow: '0 -4px 20px rgba(0,0,0,0.1)',
+            }}
+          >
+            {floatingItems.map((item, i) => (
+              <RenderItem
+                key={i}
+                item={item}
+              />
+            ))}
+          </Box>
+        )}
       </Container>
     </Box>
   );

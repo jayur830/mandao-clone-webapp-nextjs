@@ -160,7 +160,11 @@ function renderItemHtml(item: Data): string {
 }
 
 export function generateStandaloneHtml(data: Data[], title: string = '만다오 프로모션 페이지'): string {
-  const content = data.map(renderItemHtml).join('');
+  const regularItems = data.filter((i) => !((i.type === 'block' || i.type === 'button') && i.isFloatingBottom));
+  const floatingItems = data.filter((i) => (i.type === 'block' || i.type === 'button') && i.isFloatingBottom);
+
+  const content = regularItems.map(renderItemHtml).join('');
+  const floatingContent = floatingItems.map(renderItemHtml).join('');
 
   return `<!DOCTYPE html>
 <html lang="ko">
@@ -189,6 +193,22 @@ export function generateStandaloneHtml(data: Data[], title: string = '만다오 
       min-height: 100vh;
       box-shadow: 0 4px 20px rgba(0,0,0,0.08);
       position: relative;
+      padding-bottom: ${floatingItems.length > 0 ? '84px' : '0'};
+    }
+    .floating-cta-bar {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 512px;
+      z-index: 1000;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid #E0E0E0;
+      padding: 16px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      box-sizing: border-box;
     }
     .anim-fadeIn {
       animation: fadeIn 0.8s ease-in-out;
@@ -217,6 +237,7 @@ export function generateStandaloneHtml(data: Data[], title: string = '만다오 
   <div class="page-container">
     ${content}
   </div>
+  ${floatingContent ? `<div class="floating-cta-bar">${floatingContent}</div>` : ''}
 
   <script>
     function prevSlide(btn) {

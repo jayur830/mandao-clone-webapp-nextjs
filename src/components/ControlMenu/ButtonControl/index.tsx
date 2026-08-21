@@ -1,3 +1,4 @@
+import { PushPinOutlined } from '@mui/icons-material';
 import { Checkbox, Divider, FormControlLabel, Grid, MenuItem, Radio, RadioGroup, Select, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useColor } from 'react-color-palette';
@@ -28,6 +29,39 @@ export default function ButtonControl({ data, onChangeData }: ButtonControlProps
           버튼
         </Typography>
       </Grid>
+      <Stack
+        gap={1}
+        paddingX={2}
+        paddingBottom={1}
+      >
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={Boolean(data.isFloatingBottom)}
+              onChange={(_, checked) => onChangeData({ ...data, isFloatingBottom: checked })}
+            />
+          }
+          label={
+            <Stack
+              direction="row"
+              alignItems="center"
+              gap={0.5}
+            >
+              <PushPinOutlined
+                fontSize="small"
+                sx={{ color: '#009FFF' }}
+              />
+              <Typography
+                variant="body2"
+                fontWeight={700}
+              >
+                화면 하단 고정 바 (Sticky CTA)
+              </Typography>
+            </Stack>
+          }
+        />
+      </Stack>
+      <Divider />
       <Stack
         gap={2}
         padding={2}
