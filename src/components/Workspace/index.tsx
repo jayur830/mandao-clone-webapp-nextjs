@@ -3,6 +3,7 @@
 import { Paper } from '@mui/material';
 import { useRef } from 'react';
 
+import { MenuType } from '@/components/ComponentMenu';
 import { Data } from '@/types/block';
 
 import Block from './Block';
@@ -11,7 +12,7 @@ export interface WorkspaceProps {
   data: Data[];
   onChangeData(data: Data[]): void;
   breakpoint: 'desktop' | 'tablet' | 'mobile';
-  selectedComponent: 'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined;
+  selectedComponent: MenuType;
   selectedDataIndex?: number[] | null | undefined;
   onChangeSelectedDataIndex(value: number[]): void;
   onDeleteComponent?(dataIndex: number[]): void;
@@ -217,6 +218,50 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
                         paddingRight: 0,
                         paddingBottom: 0,
                         paddingLeft: 0,
+                      },
+                    },
+                  ];
+                case 'timer': {
+                  // 기본 마감 시간을 현재 기준 3일 후로 설정
+                  const d = new Date();
+                  d.setDate(d.getDate() + 3);
+                  d.setHours(23, 59, 0, 0);
+                  const pad = (n: number) => String(n).padStart(2, '0');
+                  const targetDateStr = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+
+                  return [
+                    ...state,
+                    {
+                      type: 'timer',
+                      targetDate: targetDateStr,
+                      label: '🔥 특가 마감까지 남은 시간',
+                      style: {
+                        fontSize: 18,
+                        color: '#FFFFFF',
+                        backgroundColor: '#1F1F1F',
+                        borderRadius: 8,
+                      },
+                    },
+                  ];
+                }
+                case 'form':
+                  return [
+                    ...state,
+                    {
+                      type: 'form',
+                      title: '🎁 이벤트 응모 & 알림 신청',
+                      fields: [
+                        { id: '1', label: '이름', placeholder: '성함을 입력하세요', type: 'text', required: true },
+                        { id: '2', label: '연락처', placeholder: '010-0000-0000', type: 'tel', required: true },
+                        { id: '3', label: '개인정보 수집 및 활용에 동의합니다', placeholder: '', type: 'checkbox', required: true },
+                      ],
+                      buttonText: '신청하기',
+                      successMessage: '이벤트 신청이 성공적으로 완료되었습니다!',
+                      style: {
+                        backgroundColor: '#FFFFFF',
+                        borderRadius: 8,
+                        boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+                        padding: 24,
                       },
                     },
                   ];

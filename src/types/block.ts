@@ -9,11 +9,20 @@ export type ElementAction = {
 
 export type AnimationType = 'none' | 'fadeIn' | 'slideUp' | 'bounce';
 
+export type FormField = {
+  id: string;
+  label: string;
+  placeholder: string;
+  type: 'text' | 'tel' | 'email' | 'checkbox';
+  required: boolean;
+};
+
 export type Data =
   | {
       type: 'block';
       fixPaddingHorizontal: boolean;
       fixPaddingVertical: boolean;
+      isFloatingBottom?: boolean;
       style?: Partial<{
         flexDirection: 'row' | 'column' | 'row-reverse' | 'column-reverse';
         justifyContent: 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly';
@@ -31,6 +40,31 @@ export type Data =
         paddingLeft: number | null;
       }>;
       children?: Data[];
+    }
+  | {
+      type: 'timer';
+      targetDate: string;
+      label?: string;
+      style?: Partial<{
+        fontSize: number;
+        color: string;
+        backgroundColor: string;
+        borderRadius: number | null;
+        boxShadow: string;
+      }>;
+    }
+  | {
+      type: 'form';
+      title: string;
+      fields: FormField[];
+      buttonText: string;
+      successMessage: string;
+      style?: Partial<{
+        backgroundColor: string;
+        borderRadius: number | null;
+        boxShadow: string;
+        padding: number;
+      }>;
     }
   | {
       type: 'image';
@@ -54,6 +88,7 @@ export type Data =
       text: string;
       fullWidth?: boolean;
       action?: ElementAction;
+      isFloatingBottom?: boolean;
       style?: Partial<{
         fontSize: number;
         fontWeight: 100 | 300 | 400 | 500 | 600 | 700;

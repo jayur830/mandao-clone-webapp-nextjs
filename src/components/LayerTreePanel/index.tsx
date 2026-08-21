@@ -1,6 +1,18 @@
 'use client';
 
-import { Close, DeleteOutline, FolderOpenOutlined, ImageOutlined, SmartButtonOutlined, SmartDisplayOutlined, TextFormatOutlined, ViewAgendaOutlined, ViewCarouselOutlined } from '@mui/icons-material';
+import {
+  Close,
+  DeleteOutline,
+  DynamicFormOutlined,
+  FolderOpenOutlined,
+  ImageOutlined,
+  SmartButtonOutlined,
+  SmartDisplayOutlined,
+  TextFormatOutlined,
+  TimerOutlined,
+  ViewAgendaOutlined,
+  ViewCarouselOutlined,
+} from '@mui/icons-material';
 import { Box, Divider, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 
 import { Data } from '@/types/block';
@@ -23,6 +35,26 @@ function getItemInfo(item: Data): { label: string; icon: React.ReactElement } {
           <FolderOpenOutlined
             fontSize="small"
             sx={{ color: '#F59E0B' }}
+          />
+        ),
+      };
+    case 'timer':
+      return {
+        label: item.label ? `타이머: "${item.label}"` : '카운트다운 타이머',
+        icon: (
+          <TimerOutlined
+            fontSize="small"
+            sx={{ color: '#EC4899' }}
+          />
+        ),
+      };
+    case 'form':
+      return {
+        label: `폼: "${item.title}"`,
+        icon: (
+          <DynamicFormOutlined
+            fontSize="small"
+            sx={{ color: '#6366F1' }}
           />
         ),
       };

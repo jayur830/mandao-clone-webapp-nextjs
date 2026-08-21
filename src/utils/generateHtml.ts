@@ -36,6 +36,29 @@ function renderItemHtml(item: Data): string {
       const width = item.fullWidth ? '100%' : 'auto';
       return `<div style="width:${width};display:flex;justify-content:center;box-sizing:border-box;"><video src="${item.src}" controls style="width:100%;height:auto;display:block;border-radius:4px;"></video></div>`;
     }
+    case 'timer': {
+      const color = item.style?.color || '#FFFFFF';
+      const bg = item.style?.backgroundColor || '#1F1F1F';
+      const br = item.style?.borderRadius != null ? `${item.style.borderRadius}px` : '8px';
+      const fs = item.style?.fontSize ? `${item.style.fontSize}px` : '18px';
+      const shadow = item.style?.boxShadow && item.style.boxShadow !== 'none' ? `box-shadow:${item.style.boxShadow};` : '';
+      const labelHtml = item.label ? `<div style="color:${color};font-weight:700;font-size:0.9em;margin-bottom:8px;text-align:center;">${item.label}</div>` : '';
+
+      return `
+        <div class="timer-widget" data-target="${item.targetDate || ''}" style="width:100%;background-color:${bg};border-radius:${br};padding:18px;font-size:${fs};box-sizing:border-box;display:flex;flex-direction:column;align-items:center;${shadow}">
+          ${labelHtml}
+          <div class="timer-countdown" style="display:flex;align-items:center;gap:6px;">
+            <div style="display:flex;flex-direction:column;align-items:center;"><span class="time-d" style="background:rgba(255,255,255,0.15);color:${color};border-radius:6px;min-width:40px;padding:6px 8px;text-align:center;font-weight:800;font-size:1.1em;">00</span><span style="color:${color};opacity:0.8;font-size:11px;margin-top:2px;">일</span></div>
+            <span style="color:${color};font-weight:800;margin-bottom:14px;">:</span>
+            <div style="display:flex;flex-direction:column;align-items:center;"><span class="time-h" style="background:rgba(255,255,255,0.15);color:${color};border-radius:6px;min-width:40px;padding:6px 8px;text-align:center;font-weight:800;font-size:1.1em;">00</span><span style="color:${color};opacity:0.8;font-size:11px;margin-top:2px;">시</span></div>
+            <span style="color:${color};font-weight:800;margin-bottom:14px;">:</span>
+            <div style="display:flex;flex-direction:column;align-items:center;"><span class="time-m" style="background:rgba(255,255,255,0.15);color:${color};border-radius:6px;min-width:40px;padding:6px 8px;text-align:center;font-weight:800;font-size:1.1em;">00</span><span style="color:${color};opacity:0.8;font-size:11px;margin-top:2px;">분</span></div>
+            <span style="color:${color};font-weight:800;margin-bottom:14px;">:</span>
+            <div style="display:flex;flex-direction:column;align-items:center;"><span class="time-s" style="background:rgba(255,255,255,0.15);color:${color};border-radius:6px;min-width:40px;padding:6px 8px;text-align:center;font-weight:800;font-size:1.1em;">00</span><span style="color:${color};opacity:0.8;font-size:11px;margin-top:2px;">초</span></div>
+          </div>
+        </div>
+      `;
+    }
     case 'carousel': {
       const items = item.items || [];
       if (items.length === 0) return '';
@@ -183,6 +206,34 @@ export function generateStandaloneHtml(data: Data[], title: string = '만다오 
       const newIdx = (activeIdx + 1) % slides.length;
       slides[newIdx].style.display = slides[newIdx].classList.contains('slide') ? 'block' : 'flex';
     }
+
+    function updateTimers() {
+      document.querySelectorAll('.timer-widget').forEach(function(widget) {
+        var targetStr = widget.getAttribute('data-target');
+        if (!targetStr) return;
+        var diff = new Date(targetStr).getTime() - new Date().getTime();
+        if (diff <= 0) {
+          widget.innerHTML = '<div style="font-weight:700;font-size:1.1em;text-align:center;padding:8px 0;">프로모션이 마감되었습니다.</div>';
+          return;
+        }
+        var d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        var m = Math.floor((diff / 1000 / 60) % 60);
+        var s = Math.floor((diff / 1000) % 60);
+        var pad = function(n) { return n < 10 ? '0' + n : n; };
+        
+        var dEl = widget.querySelector('.time-d');
+        var hEl = widget.querySelector('.time-h');
+        var mEl = widget.querySelector('.time-m');
+        var sEl = widget.querySelector('.time-s');
+        if (dEl) dEl.innerText = pad(d);
+        if (hEl) hEl.innerText = pad(h);
+        if (mEl) mEl.innerText = pad(m);
+        if (sEl) sEl.innerText = pad(s);
+      });
+    }
+    updateTimers();
+    setInterval(updateTimers, 1000);
   </script>
 </body>
 </html>`;

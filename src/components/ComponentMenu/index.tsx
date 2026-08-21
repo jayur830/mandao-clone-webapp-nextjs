@@ -1,4 +1,4 @@
-import { ImageOutlined, SmartButtonOutlined, SmartDisplayOutlined, TextFormatOutlined, ViewAgendaOutlined, ViewCarouselOutlined } from '@mui/icons-material';
+import { DynamicFormOutlined, ImageOutlined, SmartButtonOutlined, SmartDisplayOutlined, TextFormatOutlined, TimerOutlined, ViewAgendaOutlined, ViewCarouselOutlined } from '@mui/icons-material';
 import { IconButton, List, ListItem, Paper, Tooltip } from '@mui/material';
 
 const list = [
@@ -6,6 +6,16 @@ const list = [
     title: '블록',
     value: 'block',
     icon: ViewAgendaOutlined,
+  },
+  {
+    title: '타이머',
+    value: 'timer',
+    icon: TimerOutlined,
+  },
+  {
+    title: '응모 폼',
+    value: 'form',
+    icon: DynamicFormOutlined,
   },
   {
     title: '이미지',
@@ -34,9 +44,11 @@ const list = [
   },
 ];
 
+export type MenuType = 'block' | 'timer' | 'form' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined;
+
 export interface ComponentMenuProps {
-  selectedMenu: 'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined;
-  onChangeSelectedMenu(value: 'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined): void;
+  selectedMenu: MenuType;
+  onChangeSelectedMenu(value: MenuType): void;
 }
 
 export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: ComponentMenuProps) {
@@ -50,7 +62,7 @@ export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: Co
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 2,
+          gap: 1.5,
           '.MuiListItem-root': {
             justifyContent: 'center',
             padding: 0,
@@ -71,7 +83,7 @@ export default function ComponentMenu({ selectedMenu, onChangeSelectedMenu }: Co
                   },
                 }}
                 onClick={() => {
-                  const menu = value as Exclude<typeof selectedMenu, null | undefined>;
+                  const menu = value as Exclude<MenuType, null | undefined>;
                   onChangeSelectedMenu(selectedMenu === menu ? null : menu);
                 }}
               >

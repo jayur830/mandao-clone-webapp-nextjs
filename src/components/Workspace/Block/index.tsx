@@ -5,10 +5,12 @@ import { Box, Button, Grid, IconButton, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { ColorService } from 'react-color-palette';
 
+import { MenuType } from '@/components/ComponentMenu';
 import { Data } from '@/types/block';
 
 import CarouselBlock from './CarouselBlock';
 import ImageBlock from './ImageBlock';
+import TimerBlock from './TimerBlock';
 import VideoBlock from './VideoBlock';
 
 export interface BlockProps {
@@ -17,7 +19,7 @@ export interface BlockProps {
   onSelect(dataIndex: number[]): void;
   onDelete(dataIndex: number[]): void;
   onReorder(parentDataIndex: number[], fromIndex: number, toIndex: number): void;
-  selectedComponent?: 'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined;
+  selectedComponent?: MenuType;
   dataIndex: number[];
   childrenItems: Data[];
   style?: Extract<Data, { type: 'block' }>['style'];
@@ -249,6 +251,52 @@ export default function Block({ setHovered: setParentHovered, onClick, onSelect,
                 />
               );
             }
+            case 'timer':
+              return (
+                <Grid
+                  position="relative"
+                  container
+                  justifyContent="center"
+                  alignItems="center"
+                  width="100%"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelect([...dataIndex, i]);
+                  }}
+                  sx={{
+                    cursor: 'pointer',
+                    ':hover': {
+                      outline: '2px dashed #009FFF',
+                      '.hovered': { display: 'block' },
+                    },
+                  }}
+                >
+                  <Box
+                    className="hovered"
+                    position="absolute"
+                    top={-10}
+                    right={-10}
+                    zIndex={10}
+                    display="none"
+                  >
+                    <IconButton
+                      size="small"
+                      sx={{
+                        backgroundColor: 'error.main',
+                        color: 'common.white',
+                        ':hover': { backgroundColor: 'error.dark' },
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete([...dataIndex, i]);
+                      }}
+                    >
+                      <Cancel fontSize="small" />
+                    </IconButton>
+                  </Box>
+                  <TimerBlock data={item} />
+                </Grid>
+              );
             case 'carousel':
               return (
                 <CarouselBlock

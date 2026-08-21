@@ -5,6 +5,7 @@ import { Box, Button, Container, IconButton, Paper, Stack, Typography } from '@m
 import Image from 'next/image';
 import { useState } from 'react';
 
+import TimerBlock from '@/components/Workspace/Block/TimerBlock';
 import { Data } from '@/types/block';
 
 function CarouselView({ items = [] }: { items?: Data[] }) {
@@ -202,6 +203,8 @@ function RenderItem({ item }: { item: Data }) {
       );
     case 'carousel':
       return <CarouselView items={item.items} />;
+    case 'timer':
+      return <TimerBlock data={item} />;
     case 'button': {
       const handleButtonClick = () => {
         if (!item.action || item.action.type === 'none') return;

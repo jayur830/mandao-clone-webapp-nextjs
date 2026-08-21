@@ -4,7 +4,7 @@ import { AutoAwesome, FileDownloadOutlined, FileUploadOutlined, RedoOutlined, Re
 import { AppBar, Button, Grid, IconButton, Snackbar, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import ComponentMenu from '@/components/ComponentMenu';
+import ComponentMenu, { MenuType } from '@/components/ComponentMenu';
 import ControlMenu from '@/components/ControlMenu';
 import LayerTreePanel from '@/components/LayerTreePanel';
 import PublishModal from '@/components/PublishModal';
@@ -18,7 +18,7 @@ const STORAGE_KEY = 'mandao_builder_data';
 
 export default function Page() {
   const [breakpoint, setBreakpoint] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
-  const [selectedComponent, setSelectedComponent] = useState<'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined>();
+  const [selectedComponent, setSelectedComponent] = useState<MenuType>();
   const [selectedDataIndex, setSelectedDataIndex] = useState<number[]>();
   const [publishModalOpen, setPublishModalOpen] = useState<boolean>(false);
   const [templateModalOpen, setTemplateModalOpen] = useState<boolean>(false);
