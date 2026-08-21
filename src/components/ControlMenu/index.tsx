@@ -8,6 +8,7 @@ import { Data } from '@/types/block';
 
 import BlockControl from './BlockControl';
 import ButtonControl from './ButtonControl';
+import CarouselControl from './CarouselControl';
 import ImageControl from './ImageControl';
 import TextControl from './TextControl';
 import VideoControl from './VideoControl';
@@ -182,6 +183,37 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
 
                   switch (item.type) {
                     case 'video':
+                      return {
+                        ...item,
+                        ...changedData,
+                      };
+                    default:
+                      return item;
+                  }
+                }
+
+                return item;
+              }
+
+              onChangeData(data.map((item, i) => map(item, i)));
+            }}
+          />
+        )}
+        {namePath.length > 0 && get(data, namePath).type === 'carousel' && (
+          <CarouselControl
+            data={get(data, namePath)}
+            onChangeData={(changedData) => {
+              function map(item: Data, i: number, current: number = 0): Data {
+                if (selectedDataIndex && i === selectedDataIndex[current]) {
+                  if (item.type === 'block' && item.children) {
+                    return {
+                      ...item,
+                      children: item.children.map((child, j) => map(child, j, current + 1)),
+                    };
+                  }
+
+                  switch (item.type) {
+                    case 'carousel':
                       return {
                         ...item,
                         ...changedData,

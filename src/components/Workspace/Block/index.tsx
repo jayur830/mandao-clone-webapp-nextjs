@@ -208,6 +208,7 @@ export default function Block({ setHovered: setParentHovered, onClick, onSelect,
               <CarouselBlock
                 key={i}
                 dataIndex={[...dataIndex, i]}
+                items={item.items}
                 setHovered={setHovered}
                 onSelect={onSelect}
                 onDelete={onDelete}
