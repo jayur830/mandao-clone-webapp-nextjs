@@ -6,6 +6,7 @@ import { useCallback, useRef, useState } from 'react';
 
 import ComponentMenu from '@/components/ComponentMenu';
 import ControlMenu from '@/components/ControlMenu';
+import PublishModal from '@/components/PublishModal';
 import ResponsiveToolbar from '@/components/ResponsiveToolbar';
 import Workspace from '@/components/Workspace';
 import { useHistory } from '@/hooks/useHistory';
@@ -17,6 +18,7 @@ export default function Page() {
   const [breakpoint, setBreakpoint] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [selectedComponent, setSelectedComponent] = useState<'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined>();
   const [selectedDataIndex, setSelectedDataIndex] = useState<number[]>();
+  const [publishModalOpen, setPublishModalOpen] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -232,8 +234,14 @@ export default function Page() {
           data={data}
           onChangeData={handleDataChange}
           selectedDataIndex={selectedDataIndex}
+          onOpenPublish={() => setPublishModalOpen(true)}
         />
       </Grid>
+      <PublishModal
+        open={publishModalOpen}
+        onClose={() => setPublishModalOpen(false)}
+        data={data}
+      />
       <Snackbar
         open={Boolean(snackbarMessage)}
         autoHideDuration={3000}

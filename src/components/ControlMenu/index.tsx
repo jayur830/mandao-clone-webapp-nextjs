@@ -25,9 +25,10 @@ export interface ControlMenuProps {
   data: Data[];
   onChangeData(data: Data[]): void;
   selectedDataIndex?: number[] | null | undefined;
+  onOpenPublish?(): void;
 }
 
-export default function ControlMenu({ data, onChangeData, selectedDataIndex }: ControlMenuProps) {
+export default function ControlMenu({ data, onChangeData, selectedDataIndex, onOpenPublish }: ControlMenuProps) {
   // const [tab, setTab] = useState<'attribute' | 'page' | 'event' | 'material' | 'deployment'>('attribute');
 
   const namePath = (selectedDataIndex || []).map((index, i) => (i === 0 ? index : ['children', index])).flat();
@@ -303,6 +304,7 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex }: C
         <Button
           variant="contained"
           size="large"
+          onClick={onOpenPublish}
           sx={{
             flex: 1,
             fontSize: 16,
