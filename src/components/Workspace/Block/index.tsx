@@ -1,5 +1,5 @@
-import { AddRounded } from '@mui/icons-material';
-import { Button, Grid, Typography } from '@mui/material';
+import { AddRounded, Cancel } from '@mui/icons-material';
+import { Button, Grid, IconButton, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { ColorService } from 'react-color-palette';
 
@@ -36,6 +36,7 @@ export default function Block({ setHovered: setParentHovered, onClick, onSelect,
 
   return (
     <Grid
+      className="block"
       position="relative"
       container
       direction={style?.flexDirection ?? 'column'}
@@ -105,6 +106,15 @@ export default function Block({ setHovered: setParentHovered, onClick, onSelect,
           opacity: +hovered,
         }}
       />
+      <IconButton
+        className="delete-component-button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete(dataIndex);
+        }}
+      >
+        <Cancel />
+      </IconButton>
       {childrenItems.map((item, i) => {
         switch (item.type) {
           case 'block':
