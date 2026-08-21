@@ -10,6 +10,7 @@ import { encodePreviewData } from '@/utils/previewUrl';
 import BlockControl from './BlockControl';
 import ButtonControl from './ButtonControl';
 import CarouselControl from './CarouselControl';
+import FormControl from './FormControl';
 import ImageControl from './ImageControl';
 import TextControl from './TextControl';
 import TimerControl from './TimerControl';
@@ -217,6 +218,37 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex, onO
 
                   switch (item.type) {
                     case 'timer':
+                      return {
+                        ...item,
+                        ...changedData,
+                      };
+                    default:
+                      return item;
+                  }
+                }
+
+                return item;
+              }
+
+              onChangeData(data.map((item, i) => map(item, i)));
+            }}
+          />
+        )}
+        {namePath.length > 0 && get(data, namePath).type === 'form' && (
+          <FormControl
+            data={get(data, namePath)}
+            onChangeData={(changedData) => {
+              function map(item: Data, i: number, current: number = 0): Data {
+                if (selectedDataIndex && i === selectedDataIndex[current]) {
+                  if (item.type === 'block' && item.children) {
+                    return {
+                      ...item,
+                      children: item.children.map((child, j) => map(child, j, current + 1)),
+                    };
+                  }
+
+                  switch (item.type) {
+                    case 'form':
                       return {
                         ...item,
                         ...changedData,

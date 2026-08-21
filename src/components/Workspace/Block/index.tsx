@@ -9,6 +9,7 @@ import { MenuType } from '@/components/ComponentMenu';
 import { Data } from '@/types/block';
 
 import CarouselBlock from './CarouselBlock';
+import FormBlock from './FormBlock';
 import ImageBlock from './ImageBlock';
 import TimerBlock from './TimerBlock';
 import VideoBlock from './VideoBlock';
@@ -295,6 +296,55 @@ export default function Block({ setHovered: setParentHovered, onClick, onSelect,
                     </IconButton>
                   </Box>
                   <TimerBlock data={item} />
+                </Grid>
+              );
+            case 'form':
+              return (
+                <Grid
+                  position="relative"
+                  container
+                  justifyContent="center"
+                  alignItems="center"
+                  width="100%"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelect([...dataIndex, i]);
+                  }}
+                  sx={{
+                    cursor: 'pointer',
+                    ':hover': {
+                      outline: '2px dashed #009FFF',
+                      '.hovered': { display: 'block' },
+                    },
+                  }}
+                >
+                  <Box
+                    className="hovered"
+                    position="absolute"
+                    top={-10}
+                    right={-10}
+                    zIndex={10}
+                    display="none"
+                  >
+                    <IconButton
+                      size="small"
+                      sx={{
+                        backgroundColor: 'error.main',
+                        color: 'common.white',
+                        ':hover': { backgroundColor: 'error.dark' },
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete([...dataIndex, i]);
+                      }}
+                    >
+                      <Cancel fontSize="small" />
+                    </IconButton>
+                  </Box>
+                  <FormBlock
+                    data={item}
+                    isInteractive={false}
+                  />
                 </Grid>
               );
             case 'carousel':

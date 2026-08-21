@@ -59,6 +59,42 @@ function renderItemHtml(item: Data): string {
         </div>
       `;
     }
+    case 'form': {
+      const bg = item.style?.backgroundColor || '#FFFFFF';
+      const br = item.style?.borderRadius != null ? `${item.style.borderRadius}px` : '8px';
+      const shadow = item.style?.boxShadow && item.style.boxShadow !== 'none' ? `box-shadow:${item.style.boxShadow};` : 'box-shadow:0 4px 16px rgba(0,0,0,0.08);';
+      const titleHtml = item.title ? `<div style="font-weight:700;font-size:18px;text-align:center;margin-bottom:16px;">${item.title}</div>` : '';
+      const successMsg = (item.successMessage || '신청이 완료되었습니다!').replace(/'/g, "\\'");
+
+      const fieldsHtml = (item.fields || [])
+        .map((field) => {
+          if (field.type === 'checkbox') {
+            return `
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#555;cursor:pointer;margin-bottom:12px;">
+                <input type="checkbox" data-label="${field.label}" ${field.required ? 'data-required="true"' : ''} style="width:16px;height:16px;" />
+                <span>${field.label} ${field.required ? '<span style="color:#EF4444;">*</span>' : ''}</span>
+              </label>
+            `;
+          }
+          return `
+            <div style="margin-bottom:12px;">
+              <label style="display:block;font-size:12px;font-weight:600;color:#555;margin-bottom:4px;">${field.label} ${field.required ? '<span style="color:#EF4444;">*</span>' : ''}</label>
+              <input type="${field.type}" placeholder="${field.placeholder || ''}" data-label="${field.label}" ${field.required ? 'data-required="true"' : ''} style="width:100%;padding:10px 12px;border:1px solid #DDD;border-radius:4px;font-size:14px;box-sizing:border-box;outline:none;" />
+            </div>
+          `;
+        })
+        .join('');
+
+      return `
+        <div class="form-widget" data-success="${successMsg}" style="width:100%;background-color:${bg};border-radius:${br};padding:24px;box-sizing:border-box;${shadow}">
+          ${titleHtml}
+          <form onsubmit="handleFormSubmit(event, this)">
+            ${fieldsHtml}
+            <button type="submit" style="width:100%;background-color:#0B74E2;color:#FFF;border:none;border-radius:4px;padding:12px;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">${item.buttonText || '신청하기'}</button>
+          </form>
+        </div>
+      `;
+    }
     case 'carousel': {
       const items = item.items || [];
       if (items.length === 0) return '';
@@ -231,6 +267,33 @@ export function generateStandaloneHtml(data: Data[], title: string = '만다오 
         if (mEl) mEl.innerText = pad(m);
         if (sEl) sEl.innerText = pad(s);
       });
+    }
+    function handleFormSubmit(e, formEl) {
+      e.preventDefault();
+      var widget = formEl.closest('.form-widget');
+      var successMsg = widget ? widget.getAttribute('data-success') : '신청이 완료되었습니다!';
+      var inputs = formEl.querySelectorAll('input');
+      
+      for (var i = 0; i < inputs.length; i++) {
+        var inp = inputs[i];
+        var isReq = inp.getAttribute('data-required') === 'true';
+        var label = inp.getAttribute('data-label') || '필드';
+        
+        if (isReq) {
+          if (inp.type === 'checkbox' && !inp.checked) {
+            alert('[필수 동의] "' + label + '" 항목에 동의해 주세요.');
+            return;
+          }
+          if (inp.type !== 'checkbox' && (!inp.value || inp.value.trim() === '')) {
+            alert('[필수 입력] "' + label + '" 항목을 입력해 주세요.');
+            inp.focus();
+            return;
+          }
+        }
+      }
+      
+      alert(successMsg);
+      formEl.reset();
     }
     updateTimers();
     setInterval(updateTimers, 1000);
