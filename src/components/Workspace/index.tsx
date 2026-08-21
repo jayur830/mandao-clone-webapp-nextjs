@@ -14,6 +14,8 @@ export interface WorkspaceProps {
   selectedComponent: 'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined;
   selectedDataIndex?: number[] | null | undefined;
   onChangeSelectedDataIndex(value: number[]): void;
+  onDeleteComponent?(dataIndex: number[]): void;
+  zoom?: number;
 }
 
 const widthMap = {
@@ -29,7 +31,7 @@ function reorderArray<T>(list: T[], startIndex: number, endIndex: number): T[] {
   return result;
 }
 
-export default function Workspace({ data, onChangeData, breakpoint, selectedComponent, selectedDataIndex, onChangeSelectedDataIndex }: WorkspaceProps) {
+export default function Workspace({ data, onChangeData, breakpoint, selectedComponent, selectedDataIndex, onChangeSelectedDataIndex, onDeleteComponent, zoom = 1 }: WorkspaceProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   const handleReorder = (parentDataIndex: number[], fromIndex: number, toIndex: number) => {
@@ -65,13 +67,52 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
     onChangeData(data.map((item, i) => map(item, i)));
   };
 
+  const handleDelete = (dataIndex: number[]) => {
+    if (onDeleteComponent) {
+      onDeleteComponent(dataIndex);
+      return;
+    }
+
+    if (dataIndex.every((index, i) => index === selectedDataIndex?.[i])) {
+      onChangeSelectedDataIndex([]);
+    }
+
+    if (dataIndex.length === 1) {
+      return onChangeData(data.filter((_, i) => i !== dataIndex[0]));
+    }
+
+    function map(item: Data, i: number, current: number = 0): Data {
+      if (i === dataIndex[current]) {
+        if (item.type === 'block' && item.children) {
+          if (current === dataIndex.length - 2) {
+            return {
+              ...item,
+              children: item.children.filter((_, j) => j !== dataIndex[current + 1]),
+            };
+          }
+
+          return {
+            ...item,
+            children: item.children.map((child, j) => map(child, j, current + 1)),
+          };
+        }
+        return item;
+      }
+      return item;
+    }
+
+    onChangeData(data.map((item, i) => map(item, i)));
+  };
+
   return (
     <div
       ref={ref}
       style={{
         width: '100%',
         maxWidth: widthMap[breakpoint],
-        transition: 'all 0.3s ease',
+        transform: `scale(${zoom})`,
+        transformOrigin: 'top center',
+        transition: 'width 0.3s ease, transform 0.2s ease',
       }}
     >
       <Paper
@@ -216,39 +257,7 @@ export default function Workspace({ data, onChangeData, breakpoint, selectedComp
           onSelect={(dataIndex) => {
             onChangeSelectedDataIndex(dataIndex);
           }}
-          onDelete={(dataIndex) => {
-            if (dataIndex.every((index, i) => index === selectedDataIndex?.[i])) {
-              onChangeSelectedDataIndex([]);
-            }
-
-            if (dataIndex.length === 1) {
-              return onChangeData(data.filter((_, i) => i !== dataIndex[0]));
-            }
-
-            function map(item: Data, i: number, current: number = 0): Data {
-              if (i === dataIndex[current]) {
-                if (item.type === 'block' && item.children) {
-                  if (current === dataIndex.length - 2) {
-                    return {
-                      ...item,
-                      children: item.children.filter((_, j) => j !== dataIndex[current + 1]),
-                    };
-                  }
-
-                  return {
-                    ...item,
-                    children: item.children.map((child, j) => map(child, j, current + 1)),
-                  };
-                }
-
-                return item;
-              }
-
-              return item;
-            }
-
-            onChangeData(data.map((item, i) => map(item, i)));
-          }}
+          onDelete={handleDelete}
           onReorder={handleReorder}
           dataIndex={[]}
           childrenItems={data}

@@ -6,6 +6,7 @@ import { useCallback, useRef, useState } from 'react';
 
 import ComponentMenu from '@/components/ComponentMenu';
 import ControlMenu from '@/components/ControlMenu';
+import LayerTreePanel from '@/components/LayerTreePanel';
 import PublishModal from '@/components/PublishModal';
 import ResponsiveToolbar from '@/components/ResponsiveToolbar';
 import TemplateGalleryModal from '@/components/TemplateGalleryModal';
@@ -21,6 +22,8 @@ export default function Page() {
   const [selectedDataIndex, setSelectedDataIndex] = useState<number[]>();
   const [publishModalOpen, setPublishModalOpen] = useState<boolean>(false);
   const [templateModalOpen, setTemplateModalOpen] = useState<boolean>(false);
+  const [layerTreeOpen, setLayerTreeOpen] = useState<boolean>(false);
+  const [zoom, setZoom] = useState<number>(1);
   const [snackbarMessage, setSnackbarMessage] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -229,10 +232,14 @@ export default function Page() {
           <Grid
             position="fixed"
             top={90}
+            zIndex={100}
           >
             <ResponsiveToolbar
               breakpoint={breakpoint}
               onChangeBreakpoint={setBreakpoint}
+              zoom={zoom}
+              onChangeZoom={setZoom}
+              onOpenLayers={() => setLayerTreeOpen(true)}
             />
           </Grid>
           <Workspace
@@ -242,6 +249,7 @@ export default function Page() {
             selectedComponent={selectedComponent}
             selectedDataIndex={selectedDataIndex}
             onChangeSelectedDataIndex={setSelectedDataIndex}
+            zoom={zoom}
           />
         </Grid>
         <ControlMenu
@@ -251,6 +259,41 @@ export default function Page() {
           onOpenPublish={() => setPublishModalOpen(true)}
         />
       </Grid>
+      <LayerTreePanel
+        open={layerTreeOpen}
+        onClose={() => setLayerTreeOpen(false)}
+        data={data}
+        selectedDataIndex={selectedDataIndex}
+        onSelect={(index) => {
+          setSelectedDataIndex(index);
+          setLayerTreeOpen(false);
+        }}
+        onDelete={(index) => {
+          if (index.length === 1) {
+            handleDataChange(data.filter((_, i) => i !== index[0]));
+            return;
+          }
+          function map(item: Data, i: number, current: number = 0): Data {
+            if (i === index[current]) {
+              if (item.type === 'block' && item.children) {
+                if (current === index.length - 2) {
+                  return {
+                    ...item,
+                    children: item.children.filter((_, j) => j !== index[current + 1]),
+                  };
+                }
+                return {
+                  ...item,
+                  children: item.children.map((child, j) => map(child, j, current + 1)),
+                };
+              }
+              return item;
+            }
+            return item;
+          }
+          handleDataChange(data.map((item, i) => map(item, i)));
+        }}
+      />
       <PublishModal
         open={publishModalOpen}
         onClose={() => setPublishModalOpen(false)}
