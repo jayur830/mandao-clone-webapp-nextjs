@@ -1,9 +1,10 @@
 'use client';
 
-import { Add, DeleteOutline, FileUploadOutlined } from '@mui/icons-material';
+import { Add, CollectionsBookmarkOutlined, DeleteOutline, FileUploadOutlined } from '@mui/icons-material';
 import { Box, Button, Divider, Grid, IconButton, List, ListItem, ListItemText, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 
+import StockImageModal from '@/components/StockImageModal';
 import { Data } from '@/types/block';
 
 function getBase64(file: File) {
@@ -23,6 +24,7 @@ export interface CarouselControlProps {
 
 export default function CarouselControl({ data, onChangeData }: CarouselControlProps) {
   const [imageUrl, setImageUrl] = useState<string>('');
+  const [stockModalOpen, setStockModalOpen] = useState<boolean>(false);
 
   const items = data.items || [];
 
@@ -129,7 +131,25 @@ export default function CarouselControl({ data, onChangeData }: CarouselControlP
             추가
           </Button>
         </Stack>
+
+        <Button
+          variant="outlined"
+          color="primary"
+          startIcon={<CollectionsBookmarkOutlined />}
+          onClick={() => setStockModalOpen(true)}
+          sx={{ fontWeight: 700, mt: 1 }}
+        >
+          무료 스톡 이미지에서 슬라이드 추가
+        </Button>
       </Stack>
+
+      <StockImageModal
+        open={stockModalOpen}
+        onClose={() => setStockModalOpen(false)}
+        onSelectImage={(selectedUrl) => {
+          handleAddImageSlide(selectedUrl);
+        }}
+      />
 
       <Divider />
 

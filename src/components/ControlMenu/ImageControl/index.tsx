@@ -1,7 +1,8 @@
-import { FileUploadOutlined } from '@mui/icons-material';
+import { CollectionsBookmarkOutlined, FileUploadOutlined } from '@mui/icons-material';
 import { Box, Button, ButtonGroup, Checkbox, Divider, FormControlLabel, Grid, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 
+import StockImageModal from '@/components/StockImageModal';
 import { Data } from '@/types/block';
 
 function getBase64(file: File) {
@@ -24,6 +25,7 @@ export default function ImageControl({ data, onChangeData }: ImageControlProps) 
   const [file, setFile] = useState<File | null | undefined>();
   const [url, setUrl] = useState<string>('');
   const [focusedOnDrag, setFocusedOnDrag] = useState<boolean>(false);
+  const [stockModalOpen, setStockModalOpen] = useState<boolean>(false);
 
   const actionType = data.action?.type || 'none';
 
@@ -171,7 +173,25 @@ export default function ImageControl({ data, onChangeData }: ImageControlProps) 
             </Button>
           </>
         )}
+
+        <Button
+          variant="outlined"
+          color="primary"
+          startIcon={<CollectionsBookmarkOutlined />}
+          onClick={() => setStockModalOpen(true)}
+          sx={{ fontWeight: 700, mt: 1 }}
+        >
+          무료 고화질 스톡 이미지에서 선택
+        </Button>
       </Stack>
+
+      <StockImageModal
+        open={stockModalOpen}
+        onClose={() => setStockModalOpen(false)}
+        onSelectImage={(selectedUrl) => {
+          onChangeData({ ...data, src: selectedUrl });
+        }}
+      />
       <Divider />
 
       {/* 클릭 액션/이벤트 설정 */}
