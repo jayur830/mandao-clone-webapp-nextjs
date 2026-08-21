@@ -1,6 +1,6 @@
 'use client';
 
-import { FileDownloadOutlined, FileUploadOutlined, RedoOutlined, RestartAltOutlined, UndoOutlined } from '@mui/icons-material';
+import { AutoAwesome, FileDownloadOutlined, FileUploadOutlined, RedoOutlined, RestartAltOutlined, UndoOutlined } from '@mui/icons-material';
 import { AppBar, Button, Grid, IconButton, Snackbar, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
 import { useCallback, useRef, useState } from 'react';
 
@@ -8,6 +8,7 @@ import ComponentMenu from '@/components/ComponentMenu';
 import ControlMenu from '@/components/ControlMenu';
 import PublishModal from '@/components/PublishModal';
 import ResponsiveToolbar from '@/components/ResponsiveToolbar';
+import TemplateGalleryModal from '@/components/TemplateGalleryModal';
 import Workspace from '@/components/Workspace';
 import { useHistory } from '@/hooks/useHistory';
 import { Data } from '@/types/block';
@@ -19,6 +20,7 @@ export default function Page() {
   const [selectedComponent, setSelectedComponent] = useState<'block' | 'image' | 'video' | 'carousel' | 'button' | 'text' | null | undefined>();
   const [selectedDataIndex, setSelectedDataIndex] = useState<number[]>();
   const [publishModalOpen, setPublishModalOpen] = useState<boolean>(false);
+  const [templateModalOpen, setTemplateModalOpen] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -149,6 +151,18 @@ export default function Page() {
               </span>
             </Tooltip>
 
+            <Tooltip title="프로모션 템플릿 갤러리">
+              <Button
+                color="inherit"
+                size="small"
+                startIcon={<AutoAwesome sx={{ color: '#FFD700' }} />}
+                onClick={() => setTemplateModalOpen(true)}
+                sx={{ textTransform: 'none', fontWeight: 700 }}
+              >
+                템플릿 갤러리
+              </Button>
+            </Tooltip>
+
             <input
               type="file"
               ref={fileInputRef}
@@ -241,6 +255,15 @@ export default function Page() {
         open={publishModalOpen}
         onClose={() => setPublishModalOpen(false)}
         data={data}
+      />
+      <TemplateGalleryModal
+        open={templateModalOpen}
+        onClose={() => setTemplateModalOpen(false)}
+        onSelectTemplate={(templateData) => {
+          resetHistory(templateData);
+          setSelectedDataIndex(undefined);
+          setSnackbarMessage('템플릿이 성공적으로 적용되었습니다!');
+        }}
       />
       <Snackbar
         open={Boolean(snackbarMessage)}
