@@ -103,7 +103,32 @@ function CarouselView({ items = [] }: { items?: Data[] }) {
 
 function RenderItem({ item }: { item: Data }) {
   switch (item.type) {
-    case 'block':
+    case 'block': {
+      const getAnimationSx = () => {
+        switch (item.style?.animation) {
+          case 'fadeIn':
+            return {
+              animation: 'fadeIn 0.8s ease-in-out',
+              '@keyframes fadeIn': { from: { opacity: 0 }, to: { opacity: 1 } },
+            };
+          case 'slideUp':
+            return {
+              animation: 'slideUp 0.6s ease-out',
+              '@keyframes slideUp': { from: { opacity: 0, transform: 'translateY(24px)' }, to: { opacity: 1, transform: 'translateY(0)' } },
+            };
+          case 'bounce':
+            return {
+              animation: 'bounce 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97)',
+              '@keyframes bounce': {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-12px)' },
+              },
+            };
+          default:
+            return {};
+        }
+      };
+
       return (
         <Box
           display="flex"
@@ -112,11 +137,15 @@ function RenderItem({ item }: { item: Data }) {
           alignItems={item.style?.alignItems || 'center'}
           gap={item.style?.gap != null ? `${item.style.gap}px` : undefined}
           bgcolor={item.style?.backgroundColor || 'transparent'}
+          borderRadius={item.style?.borderRadius != null ? `${item.style.borderRadius}px` : undefined}
+          border={item.style?.borderWidth ? `${item.style.borderWidth}px solid ${item.style.borderColor || '#E0E0E0'}` : undefined}
+          boxShadow={item.style?.boxShadow && item.style.boxShadow !== 'none' ? item.style.boxShadow : undefined}
           paddingTop={`${item.style?.paddingTop || 0}px`}
           paddingRight={`${item.style?.paddingRight || 0}px`}
           paddingBottom={`${item.style?.paddingBottom || 0}px`}
           paddingLeft={`${item.style?.paddingLeft || 0}px`}
           width="100%"
+          sx={getAnimationSx()}
         >
           {item.children?.map((child, i) => (
             <RenderItem
@@ -126,6 +155,7 @@ function RenderItem({ item }: { item: Data }) {
           ))}
         </Box>
       );
+    }
     case 'image': {
       if (!item.src) return null;
       const handleImageClick = () => {

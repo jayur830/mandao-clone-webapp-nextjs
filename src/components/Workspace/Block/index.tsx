@@ -78,6 +78,8 @@ export default function Block({ setHovered: setParentHovered, onClick, onSelect,
       rowGap={(style?.flexDirection === 'column' || style?.flexDirection === 'column-reverse') && style?.gap != null ? `${style.gap}px` : 0}
       columnGap={(style?.flexDirection === 'row' || style?.flexDirection === 'row-reverse') && style?.gap != null ? `${style.gap}px` : 0}
       bgcolor={style?.backgroundColor || 'transparent'}
+      borderRadius={style?.borderRadius != null ? `${style.borderRadius}px` : undefined}
+      border={style?.borderWidth ? `${style.borderWidth}px solid ${style.borderColor || '#E0E0E0'}` : undefined}
       paddingTop={`${style?.paddingTop || 0}px`}
       paddingRight={`${style?.paddingRight || 0}px`}
       paddingBottom={`${style?.paddingBottom || 0}px`}
@@ -99,9 +101,10 @@ export default function Block({ setHovered: setParentHovered, onClick, onSelect,
         setParentHovered?.(true);
       }}
       sx={{
-        transition: 'background-color 0.3s ease',
+        transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
         cursor: 'pointer',
         width: '100%',
+        boxShadow: style?.boxShadow && style.boxShadow !== 'none' ? style.boxShadow : undefined,
         ':hover': {
           backgroundColor: hoveredBackgroundColor,
           '.hovered': { display: 'block' },

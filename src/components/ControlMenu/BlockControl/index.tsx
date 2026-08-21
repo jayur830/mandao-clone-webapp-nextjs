@@ -316,6 +316,113 @@ export default function BlockControl({ data, onChangeData }: BlockControlProps) 
           }}
         />
       </Stack>
+      <Divider />
+      <Stack
+        gap={2}
+        padding={2}
+      >
+        <Typography
+          variant="h6"
+          fontWeight={700}
+        >
+          테두리 & 모서리
+        </Typography>
+        <Grid
+          container
+          gap={2}
+        >
+          <TextField
+            label="모서리 둥글기"
+            type="number"
+            size="small"
+            value={data.style?.borderRadius ?? ''}
+            onChange={(e) => {
+              onChangeData({
+                ...data,
+                style: {
+                  ...data.style,
+                  borderRadius: e.target.value !== '' ? +e.target.value : null,
+                },
+              });
+            }}
+            InputProps={{ endAdornment: 'px' }}
+            sx={{ flex: 1 }}
+          />
+          <TextField
+            label="테두리 두께"
+            type="number"
+            size="small"
+            value={data.style?.borderWidth ?? ''}
+            onChange={(e) => {
+              onChangeData({
+                ...data,
+                style: {
+                  ...data.style,
+                  borderWidth: e.target.value !== '' ? +e.target.value : null,
+                },
+              });
+            }}
+            InputProps={{ endAdornment: 'px' }}
+            sx={{ flex: 1 }}
+          />
+        </Grid>
+      </Stack>
+      <Divider />
+      <Stack
+        gap={2}
+        padding={2}
+      >
+        <Typography
+          variant="h6"
+          fontWeight={700}
+        >
+          그림자 & 애니메이션
+        </Typography>
+        <Grid
+          container
+          gap={2}
+        >
+          <Select
+            size="small"
+            value={data.style?.boxShadow || 'none'}
+            onChange={(e) => {
+              onChangeData({
+                ...data,
+                style: {
+                  ...data.style,
+                  boxShadow: e.target.value,
+                },
+              });
+            }}
+            sx={{ flex: 1 }}
+          >
+            <MenuItem value="none">그림자 없음</MenuItem>
+            <MenuItem value="0 2px 8px rgba(0,0,0,0.08)">약한 그림자</MenuItem>
+            <MenuItem value="0 8px 24px rgba(0,0,0,0.12)">보통 그림자</MenuItem>
+            <MenuItem value="0 16px 36px rgba(0,0,0,0.2)">강한 그림자</MenuItem>
+          </Select>
+
+          <Select
+            size="small"
+            value={data.style?.animation || 'none'}
+            onChange={(e) => {
+              onChangeData({
+                ...data,
+                style: {
+                  ...data.style,
+                  animation: e.target.value as 'none' | 'fadeIn' | 'slideUp' | 'bounce',
+                },
+              });
+            }}
+            sx={{ flex: 1 }}
+          >
+            <MenuItem value="none">애니메이션 없음</MenuItem>
+            <MenuItem value="fadeIn">✨ 페이드 인 (Fade In)</MenuItem>
+            <MenuItem value="slideUp">🔼 슬라이드 업 (Slide Up)</MenuItem>
+            <MenuItem value="bounce">🎾 바운스 (Bounce)</MenuItem>
+          </Select>
+        </Grid>
+      </Stack>
     </>
   );
 }

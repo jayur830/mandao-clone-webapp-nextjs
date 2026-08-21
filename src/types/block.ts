@@ -7,6 +7,8 @@ export type ElementAction = {
   alertMessage?: string;
 };
 
+export type AnimationType = 'none' | 'fadeIn' | 'slideUp' | 'bounce';
+
 export type Data =
   | {
       type: 'block';
@@ -18,6 +20,11 @@ export type Data =
         alignItems: 'flex-start' | 'center' | 'flex-end' | 'stretch' | 'baseline';
         gap: number | null;
         backgroundColor: string;
+        boxShadow: string;
+        borderRadius: number | null;
+        borderWidth: number | null;
+        borderColor: string;
+        animation: AnimationType;
         paddingTop: number | null;
         paddingRight: number | null;
         paddingBottom: number | null;

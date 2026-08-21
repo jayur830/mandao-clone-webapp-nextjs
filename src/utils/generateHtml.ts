@@ -12,9 +12,13 @@ function renderItemHtml(item: Data): string {
       const pr = `${item.style?.paddingRight || 0}px`;
       const pb = `${item.style?.paddingBottom || 0}px`;
       const pl = `${item.style?.paddingLeft || 0}px`;
+      const br = item.style?.borderRadius != null ? `border-radius:${item.style.borderRadius}px;` : '';
+      const bw = item.style?.borderWidth ? `border:${item.style.borderWidth}px solid ${item.style.borderColor || '#E0E0E0'};` : '';
+      const shadow = item.style?.boxShadow && item.style.boxShadow !== 'none' ? `box-shadow:${item.style.boxShadow};` : '';
+      const animClass = item.style?.animation && item.style.animation !== 'none' ? `anim-${item.style.animation}` : '';
 
       const childrenHtml = (item.children || []).map(renderItemHtml).join('');
-      return `<div style="display:flex;flex-direction:${dir};justify-content:${jc};align-items:${ai};gap:${gap};background-color:${bg};padding:${pt} ${pr} ${pb} ${pl};width:100%;box-sizing:border-box;">${childrenHtml}</div>`;
+      return `<div class="${animClass}" style="display:flex;flex-direction:${dir};justify-content:${jc};align-items:${ai};gap:${gap};background-color:${bg};padding:${pt} ${pr} ${pb} ${pl};width:100%;box-sizing:border-box;${br}${bw}${shadow}">${childrenHtml}</div>`;
     }
     case 'image': {
       if (!item.src) return '';
@@ -126,6 +130,27 @@ export function generateStandaloneHtml(data: Data[], title: string = '만다오 
       min-height: 100vh;
       box-shadow: 0 4px 20px rgba(0,0,0,0.08);
       position: relative;
+    }
+    .anim-fadeIn {
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    .anim-slideUp {
+      animation: slideUp 0.6s ease-out;
+    }
+    .anim-bounce {
+      animation: bounce 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
     }
   </style>
 </head>
