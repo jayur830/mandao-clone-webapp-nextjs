@@ -1,10 +1,6 @@
-import { createTheme } from '@mui/material';
-import createPalette from '@mui/material/styles/createPalette';
-
-export const palette = createPalette({});
+import { createTheme } from '@mui/material/styles';
 
 export const theme = createTheme({
-  palette,
   components: {
     MuiButton: {
       styleOverrides: {

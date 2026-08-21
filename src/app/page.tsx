@@ -2,7 +2,7 @@
 
 import { AutoAwesome, FileDownloadOutlined, FileUploadOutlined, RedoOutlined, RestartAltOutlined, UndoOutlined } from '@mui/icons-material';
 import { AppBar, Button, Grid, IconButton, Snackbar, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import ComponentMenu from '@/components/ComponentMenu';
 import ControlMenu from '@/components/ControlMenu';
@@ -27,20 +27,6 @@ export default function Page() {
   const [snackbarMessage, setSnackbarMessage] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const initialData: Data[] = (() => {
-    if (typeof window === 'undefined') return [];
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed;
-      }
-    } catch (e) {
-      console.error('Failed to load saved data:', e);
-    }
-    return [];
-  })();
-
   const handleSaveToStorage = useCallback((newData: Data[]) => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
@@ -49,7 +35,22 @@ export default function Page() {
     }
   }, []);
 
-  const { state: data, set: handleDataChange, undo, redo, resetHistory, canUndo, canRedo } = useHistory(initialData, handleSaveToStorage);
+  const { state: data, set: handleDataChange, undo, redo, resetHistory, canUndo, canRedo } = useHistory([], handleSaveToStorage);
+
+  // 클라이언트 마운트 시 로컬스토리지 데이터 복구 (Hydration Mismatch 방지)
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          resetHistory(parsed);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load saved data:', e);
+    }
+  }, [resetHistory]);
 
   // JSON 파일로 내보내기 (Export)
   const handleExportJson = () => {
