@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 import { Data } from '@/types/block';
 import { generateStandaloneHtml } from '@/utils/generateHtml';
+import { encodePreviewData } from '@/utils/previewUrl';
 
 export interface PublishModalProps {
   open: boolean;
@@ -16,8 +17,8 @@ export interface PublishModalProps {
 export default function PublishModal({ open, onClose, data }: PublishModalProps) {
   const [copied, setCopied] = useState<boolean>(false);
 
-  const base64Str = typeof window !== 'undefined' ? Buffer.from(JSON.stringify(data), 'utf8').toString('base64') : '';
-  const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/preview/${base64Str}` : '';
+  const base64Str = encodePreviewData(data);
+  const shareUrl = typeof window !== 'undefined' && base64Str ? `${window.location.origin}/preview/${base64Str}` : '';
 
   const handleDownloadHtml = () => {
     const htmlContent = generateStandaloneHtml(data);

@@ -5,6 +5,7 @@ import { get } from 'lodash';
 import Link from 'next/link';
 
 import { Data } from '@/types/block';
+import { encodePreviewData } from '@/utils/previewUrl';
 
 import BlockControl from './BlockControl';
 import ButtonControl from './ButtonControl';
@@ -316,7 +317,7 @@ export default function ControlMenu({ data, onChangeData, selectedDataIndex, onO
         </Button>
         <Button
           LinkComponent={Link}
-          href={`/preview/${Buffer.from(JSON.stringify(data), 'utf8').toString('base64')}`}
+          href={`/preview/${encodePreviewData(data)}`}
           target="_blank"
           variant="outlined"
           size="large"
