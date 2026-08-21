@@ -1,5 +1,12 @@
 import { CSSProperties } from 'react';
 
+export type ElementAction = {
+  type: 'none' | 'link' | 'alert';
+  url?: string;
+  target?: '_blank' | '_self';
+  alertMessage?: string;
+};
+
 export type Data =
   | {
       type: 'block';
@@ -22,6 +29,7 @@ export type Data =
       type: 'image';
       src?: string;
       fullWidth?: boolean;
+      action?: ElementAction;
       style?: Partial<CSSProperties>;
     }
   | {
@@ -38,6 +46,7 @@ export type Data =
       type: 'button';
       text: string;
       fullWidth?: boolean;
+      action?: ElementAction;
       style?: Partial<{
         fontSize: number;
         fontWeight: 100 | 300 | 400 | 500 | 600 | 700;

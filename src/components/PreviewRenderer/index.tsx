@@ -126,13 +126,24 @@ function RenderItem({ item }: { item: Data }) {
           ))}
         </Box>
       );
-    case 'image':
+    case 'image': {
       if (!item.src) return null;
+      const handleImageClick = () => {
+        if (!item.action || item.action.type === 'none') return;
+        if (item.action.type === 'link' && item.action.url) {
+          window.open(item.action.url, item.action.target || '_blank');
+        } else if (item.action.type === 'alert' && item.action.alertMessage) {
+          alert(item.action.alertMessage);
+        }
+      };
+
       return (
         <Box
           width={item.fullWidth ? '100%' : item.style?.width || 'auto'}
           display="flex"
           justifyContent="center"
+          onClick={handleImageClick}
+          sx={{ cursor: item.action && item.action.type !== 'none' ? 'pointer' : 'default' }}
         >
           <Image
             src={item.src}
@@ -143,6 +154,7 @@ function RenderItem({ item }: { item: Data }) {
           />
         </Box>
       );
+    }
     case 'video':
       if (!item.src) return null;
       return (
@@ -160,11 +172,21 @@ function RenderItem({ item }: { item: Data }) {
       );
     case 'carousel':
       return <CarouselView items={item.items} />;
-    case 'button':
+    case 'button': {
+      const handleButtonClick = () => {
+        if (!item.action || item.action.type === 'none') return;
+        if (item.action.type === 'link' && item.action.url) {
+          window.open(item.action.url, item.action.target || '_blank');
+        } else if (item.action.type === 'alert' && item.action.alertMessage) {
+          alert(item.action.alertMessage);
+        }
+      };
+
       return (
         <Button
           variant="contained"
           fullWidth={item.fullWidth}
+          onClick={handleButtonClick}
           sx={{
             ...item.style,
             borderRadius: item.style?.borderRadius != null ? `${item.style.borderRadius}px` : 0,
@@ -173,6 +195,7 @@ function RenderItem({ item }: { item: Data }) {
           {item.text}
         </Button>
       );
+    }
     case 'text':
       return (
         <Typography

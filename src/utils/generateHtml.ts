@@ -19,7 +19,13 @@ function renderItemHtml(item: Data): string {
     case 'image': {
       if (!item.src) return '';
       const width = item.fullWidth ? '100%' : item.style?.width || 'auto';
-      return `<div style="width:${width};display:flex;justify-content:center;box-sizing:border-box;"><img src="${item.src}" alt="promotion image" style="width:100%;height:auto;display:block;border-radius:4px;" /></div>`;
+      let onclickAttr = '';
+      if (item.action?.type === 'link' && item.action.url) {
+        onclickAttr = `onclick="window.open('${item.action.url}', '${item.action.target || '_blank'}')" style="cursor:pointer;"`;
+      } else if (item.action?.type === 'alert' && item.action.alertMessage) {
+        onclickAttr = `onclick="alert('${item.action.alertMessage.replace(/'/g, "\\'")}')" style="cursor:pointer;"`;
+      }
+      return `<div ${onclickAttr} style="width:${width};display:flex;justify-content:center;box-sizing:border-box;"><img src="${item.src}" alt="promotion image" style="width:100%;height:auto;display:block;border-radius:4px;" /></div>`;
     }
     case 'video': {
       if (!item.src) return '';
@@ -64,7 +70,14 @@ function renderItemHtml(item: Data): string {
       const pl = `${item.style?.paddingLeft ?? 20}px`;
       const width = item.fullWidth ? '100%' : 'auto';
 
-      return `<button style="width:${width};font-size:${fs};font-weight:${fw};color:${color};background-color:${bg};border-radius:${br};padding:${pt} ${pr} ${pb} ${pl};border:none;cursor:pointer;display:inline-block;text-align:center;box-sizing:border-box;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">${item.text}</button>`;
+      let onclickAttr = '';
+      if (item.action?.type === 'link' && item.action.url) {
+        onclickAttr = `onclick="window.open('${item.action.url}', '${item.action.target || '_blank'}')"`;
+      } else if (item.action?.type === 'alert' && item.action.alertMessage) {
+        onclickAttr = `onclick="alert('${item.action.alertMessage.replace(/'/g, "\\'")}')"`;
+      }
+
+      return `<button ${onclickAttr} style="width:${width};font-size:${fs};font-weight:${fw};color:${color};background-color:${bg};border-radius:${br};padding:${pt} ${pr} ${pb} ${pl};border:none;cursor:pointer;display:inline-block;text-align:center;box-sizing:border-box;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">${item.text}</button>`;
     }
     case 'text': {
       const fs = `${item.style?.fontSize || 16}px`;

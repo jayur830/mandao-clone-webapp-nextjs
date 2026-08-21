@@ -13,8 +13,10 @@ export interface ButtonControlProps {
 export default function ButtonControl({ data, onChangeData }: ButtonControlProps) {
   const [paddingEditType, setPaddingEditType] = useState<'none' | 'direction' | 'anchor'>('none');
 
-  const [backgroundColor, setBackgroundColor] = useColor(data.style?.backgroundColor || '#FFFFFF');
+  const [backgroundColor, setBackgroundColor] = useColor(data.style?.backgroundColor || '#0B74E2');
   const [color, setColor] = useColor(data.style?.color || '#FFFFFF');
+
+  const actionType = data.action?.type || 'none';
 
   return (
     <>
@@ -94,6 +96,97 @@ export default function ButtonControl({ data, onChangeData }: ButtonControlProps
         </Grid>
       </Stack>
       <Divider />
+
+      {/* 클릭 액션/이벤트 설정 */}
+      <Stack
+        gap={2}
+        padding={2}
+      >
+        <Typography
+          variant="h6"
+          fontWeight={700}
+        >
+          클릭 인터랙션 (이벤트)
+        </Typography>
+        <Select
+          size="small"
+          value={actionType}
+          onChange={(e) => {
+            const nextType = e.target.value as 'none' | 'link' | 'alert';
+            onChangeData({
+              ...data,
+              action: {
+                ...data.action,
+                type: nextType,
+                url: data.action?.url || '',
+                target: data.action?.target || '_blank',
+                alertMessage: data.action?.alertMessage || '쿠폰이 발급되었습니다!',
+              },
+            });
+          }}
+        >
+          <MenuItem value="none">동작 없음</MenuItem>
+          <MenuItem value="link">웹 링크로 이동</MenuItem>
+          <MenuItem value="alert">알림 팝업(Alert) 띄우기</MenuItem>
+        </Select>
+
+        {actionType === 'link' && (
+          <Stack gap={1.5}>
+            <TextField
+              size="small"
+              label="이동할 URL"
+              placeholder="https://example.com"
+              value={data.action?.url || ''}
+              onChange={(e) => {
+                onChangeData({
+                  ...data,
+                  action: {
+                    ...data.action,
+                    type: 'link',
+                    url: e.target.value,
+                  },
+                });
+              }}
+            />
+            <FormControlLabel
+              control={<Checkbox />}
+              label="새 창(새 탭)에서 열기"
+              checked={data.action?.target !== '_self'}
+              onChange={(_, checked) => {
+                onChangeData({
+                  ...data,
+                  action: {
+                    ...data.action,
+                    type: 'link',
+                    target: checked ? '_blank' : '_self',
+                  },
+                });
+              }}
+            />
+          </Stack>
+        )}
+
+        {actionType === 'alert' && (
+          <TextField
+            size="small"
+            label="표시할 알림 메시지"
+            placeholder="알림 문구를 입력하세요"
+            value={data.action?.alertMessage || ''}
+            onChange={(e) => {
+              onChangeData({
+                ...data,
+                action: {
+                  ...data.action,
+                  type: 'alert',
+                  alertMessage: e.target.value,
+                },
+              });
+            }}
+          />
+        )}
+      </Stack>
+      <Divider />
+
       <Stack
         alignItems="flex-start"
         gap={2}
@@ -237,20 +330,18 @@ export default function ButtonControl({ data, onChangeData }: ButtonControlProps
             flex={1}
             label="배경"
             colorValue={backgroundColor}
-            onChangeColor={(color) => {
-              console.log('backgroundColor:', color);
-              setBackgroundColor(color);
-              onChangeData({ ...data, style: { ...data.style, backgroundColor: color.hex } });
+            onChangeColor={(colorValue) => {
+              setBackgroundColor(colorValue);
+              onChangeData({ ...data, style: { ...data.style, backgroundColor: colorValue.hex } });
             }}
           />
           <ColorPicker
             flex={1}
             label="텍스트"
             colorValue={color}
-            onChangeColor={(color) => {
-              console.log('color:', color);
-              setColor(color);
-              onChangeData({ ...data, style: { ...data.style, color: color.hex } });
+            onChangeColor={(colorValue) => {
+              setColor(colorValue);
+              onChangeData({ ...data, style: { ...data.style, color: colorValue.hex } });
             }}
           />
         </Grid>
