@@ -23,8 +23,6 @@ const widthMap = {
 export default function Workspace({ data, onChangeData, breakpoint, selectedComponent, selectedDataIndex, onChangeSelectedDataIndex }: WorkspaceProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  console.log(new DOMParser().parseFromString(ref.current?.innerHTML || '', 'text/html'));
-
   return (
     <div
       ref={ref}

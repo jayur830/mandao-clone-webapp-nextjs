@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -15,10 +15,10 @@
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
     "lodash": "^4.17.21",
-    "next": "14.2.4",
-    "react": "^18",
+    "next": "16.3.1",
+    "react": "19.2.8",
     "react-color-palette": "^7.2.0",
-    "react-dom": "^18"
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
@@ -26,12 +26,12 @@
     "@svgr/webpack": "^8.1.0",
     "@types/lodash": "^4.17.5",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
     "commitizen": "^4.3.0",
     "cz-customizable": "^7.0.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.4",
+    "eslint": "10.8.1",
+    "eslint-config-next": "16.3.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-simple-import-sort": "^12.1.0",
@@ -42,5 +42,9 @@
     "commitizen": {
       "path": "node_modules/cz-customizable"
     }
+  },
+  "overrides": {
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4"
   }
 }
