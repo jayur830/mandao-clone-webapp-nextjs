@@ -15,13 +15,17 @@ export default function ColorPicker({ label, colorValue, onChangeColor, ...props
   const [delayLoad, setDelayLoad] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!!anchorEl) {
-      setTimeout(() => {
-        setDelayLoad(true);
-      }, 100);
-    } else {
-      setDelayLoad(false);
+    if (!anchorEl) {
+      return;
     }
+    const timer = setTimeout(() => {
+      setDelayLoad(true);
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      setDelayLoad(false);
+    };
   }, [anchorEl]);
 
   return (

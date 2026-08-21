@@ -10,10 +10,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.20",
-    "@mui/material": "^5.15.20",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^6.5.0",
+    "@mui/material": "^6.5.0",
     "lodash": "^4.17.21",
     "next": "16.3.1",
     "react": "19.2.8",
@@ -23,6 +23,8 @@
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
+    "@eslint/eslintrc": "^3.3.6",
+    "@eslint/js": "^9.39.5",
     "@svgr/webpack": "^8.1.0",
     "@types/lodash": "^4.17.5",
     "@types/node": "^20",
@@ -30,7 +32,7 @@
     "@types/react-dom": "19.2.4",
     "commitizen": "^4.3.0",
     "cz-customizable": "^7.0.0",
-    "eslint": "10.8.1",
+    "eslint": "^9.39.5",
     "eslint-config-next": "16.3.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
