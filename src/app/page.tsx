@@ -1,6 +1,6 @@
 'use client';
 
-import { AutoAwesome, FileDownloadOutlined, FileUploadOutlined, RedoOutlined, RestartAltOutlined, UndoOutlined } from '@mui/icons-material';
+import { AutoAwesome, FileDownloadOutlined, FileUploadOutlined, HelpOutlineOutlined, RedoOutlined, RestartAltOutlined, UndoOutlined } from '@mui/icons-material';
 import { AppBar, Button, Grid, IconButton, Snackbar, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -9,6 +9,7 @@ import ControlMenu from '@/components/ControlMenu';
 import LayerTreePanel from '@/components/LayerTreePanel';
 import PublishModal from '@/components/PublishModal';
 import ResponsiveToolbar from '@/components/ResponsiveToolbar';
+import ShortcutGuideModal from '@/components/ShortcutGuideModal';
 import TemplateGalleryModal from '@/components/TemplateGalleryModal';
 import Workspace from '@/components/Workspace';
 import { useHistory } from '@/hooks/useHistory';
@@ -22,6 +23,7 @@ export default function Page() {
   const [selectedDataIndex, setSelectedDataIndex] = useState<number[]>();
   const [publishModalOpen, setPublishModalOpen] = useState<boolean>(false);
   const [templateModalOpen, setTemplateModalOpen] = useState<boolean>(false);
+  const [guideModalOpen, setGuideModalOpen] = useState<boolean>(false);
   const [layerTreeOpen, setLayerTreeOpen] = useState<boolean>(false);
   const [zoom, setZoom] = useState<number>(1);
   const [snackbarMessage, setSnackbarMessage] = useState<string>('');
@@ -51,6 +53,22 @@ export default function Page() {
       console.error('Failed to load saved data:', e);
     }
   }, [resetHistory]);
+
+  // '?' 키 입력 시 단축키 및 가이드 모달 열기
+  useEffect(() => {
+    const handleHelpKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+        return;
+      }
+      if (e.key === '?') {
+        e.preventDefault();
+        setGuideModalOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleHelpKey);
+    return () => window.removeEventListener('keydown', handleHelpKey);
+  }, []);
 
   // JSON 파일로 내보내기 (Export)
   const handleExportJson = () => {
@@ -205,6 +223,15 @@ export default function Page() {
                 <RestartAltOutlined />
               </IconButton>
             </Tooltip>
+            <Tooltip title="단축키 & 사용 가이드 (?)">
+              <IconButton
+                color="inherit"
+                size="small"
+                onClick={() => setGuideModalOpen(true)}
+              >
+                <HelpOutlineOutlined />
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Toolbar>
       </AppBar>
@@ -308,6 +335,10 @@ export default function Page() {
           setSelectedDataIndex(undefined);
           setSnackbarMessage('템플릿이 성공적으로 적용되었습니다!');
         }}
+      />
+      <ShortcutGuideModal
+        open={guideModalOpen}
+        onClose={() => setGuideModalOpen(false)}
       />
       <Snackbar
         open={Boolean(snackbarMessage)}
